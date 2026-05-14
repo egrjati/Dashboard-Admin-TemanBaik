@@ -12,12 +12,12 @@
     <div class="flex min-h-screen">
 
         {{-- Sidebar --}}
-        <aside class="w-64 bg-green-800 text-white flex flex-col fixed inset-y-0 left-0 z-50">
+        <aside class="w-64 bg-[#213F9A] text-white flex flex-col fixed inset-y-0 left-0 z-50">
 
             {{-- Logo --}}
-            <div class="px-6 py-5 border-b border-green-700">
+            <div class="px-6 py-5 border-b border-[#02A6E0]">
                 <h1 class="text-xl font-bold tracking-wide">TemanBaik</h1>
-                <p class="text-xs text-green-300 mt-0.5">Admin Panel</p>
+                <p class="text-xs text-[#02A6E0] mt-0.5">Admin Panel</p>
             </div>
 
             {{-- Navigasi --}}
@@ -26,95 +26,85 @@
                 {{-- Dashboard --}}
                 <a href="{{ route('admin.dashboard') }}"
                    class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
-                          {{ request()->routeIs('admin.dashboard') ? 'bg-green-600 font-semibold' : 'hover:bg-green-700' }}">
+                          {{ request()->routeIs('admin.dashboard') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
                     Dashboard
                 </a>
 
                 {{-- Markom --}}
                 <div class="pt-3">
-                    <p class="text-xs text-green-400 uppercase tracking-widest px-3 mb-1">Markom</p>
+                    <p class="text-xs text-[#02A6E0] uppercase tracking-widest px-3 mb-1">Markom</p>
 
                     <a href="{{ route('admin.markom.home.index') }}"
                        class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
-                              {{ request()->routeIs('admin.markom.home.*') ? 'bg-green-600 font-semibold' : 'hover:bg-green-700' }}">
+                              {{ request()->routeIs('admin.markom.home.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
                         Beranda
                     </a>
                     <a href="{{ route('admin.markom.article.index') }}"
                        class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
-                              {{ request()->routeIs('admin.markom.article.*') ? 'bg-green-600 font-semibold' : 'hover:bg-green-700' }}">
+                              {{ request()->routeIs('admin.markom.article.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
                         Artikel
                     </a>
                     <a href="{{ route('admin.markom.news.index') }}"
                        class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
-                              {{ request()->routeIs('admin.markom.news.*') ? 'bg-green-600 font-semibold' : 'hover:bg-green-700' }}">
+                              {{ request()->routeIs('admin.markom.news.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
                         Berita
                     </a>
                     <a href="{{ route('admin.markom.program.index') }}"
                        class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
-                              {{ request()->routeIs('admin.markom.program.*') ? 'bg-green-600 font-semibold' : 'hover:bg-green-700' }}">
+                              {{ request()->routeIs('admin.markom.program.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
                         Program
-                    </a>
-                    <a href="{{ route('admin.markom.career.index') }}"
-                       class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
-                              {{ request()->routeIs('admin.markom.career.*') ? 'bg-green-600 font-semibold' : 'hover:bg-green-700' }}">
-                        Karir
                     </a>
                     <a href="{{ route('admin.markom.volunteer.index') }}"
                        class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
-                              {{ request()->routeIs('admin.markom.volunteer.*') ? 'bg-green-600 font-semibold' : 'hover:bg-green-700' }}">
+                              {{ request()->routeIs('admin.markom.volunteer.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
                         Volunteer
                     </a>
                     <a href="{{ route('admin.markom.faq.index') }}"
                        class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
-                              {{ request()->routeIs('admin.markom.faq.*') ? 'bg-green-600 font-semibold' : 'hover:bg-green-700' }}">
+                              {{ request()->routeIs('admin.markom.faq.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
                         FAQ
                     </a>
                     <a href="{{ route('admin.markom.mitra.index') }}"
                        class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
-                              {{ request()->routeIs('admin.markom.mitra.*') ? 'bg-green-600 font-semibold' : 'hover:bg-green-700' }}">
+                              {{ request()->routeIs('admin.markom.mitra.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
                         Mitra
                     </a>
                 </div>
 
                 {{-- Operasional --}}
                 <div class="pt-3">
-                    <p class="text-xs text-green-400 uppercase tracking-widest px-3 mb-1">Operasional</p>
+                    <p class="text-xs text-[#02A6E0] uppercase tracking-widest px-3 mb-1">Operasional</p>
 
                     <a href="{{ route('admin.operasional.donatur.index') }}"
                        class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
-                              {{ request()->routeIs('admin.operasional.donatur.*') ? 'bg-green-600 font-semibold' : 'hover:bg-green-700' }}">
+                              {{ request()->routeIs('admin.operasional.donatur.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
                         Donatur
                     </a>
                     <a href="{{ route('admin.operasional.konfirmasi-donasi.index') }}"
                        class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
-                              {{ request()->routeIs('admin.operasional.konfirmasi-donasi.*') ? 'bg-green-600 font-semibold' : 'hover:bg-green-700' }}">
+                              {{ request()->routeIs('admin.operasional.konfirmasi-donasi.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
                         Konfirmasi Donasi
                     </a>
                     <a href="{{ route('admin.operasional.bantuan.index') }}"
                        class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
-                              {{ request()->routeIs('admin.operasional.bantuan.*') ? 'bg-green-600 font-semibold' : 'hover:bg-green-700' }}">
+                              {{ request()->routeIs('admin.operasional.bantuan.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
                         Bantuan
                     </a>
                     <a href="{{ route('admin.operasional.kemitraan.index') }}"
                        class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
-                              {{ request()->routeIs('admin.operasional.kemitraan.*') ? 'bg-green-600 font-semibold' : 'hover:bg-green-700' }}">
+                              {{ request()->routeIs('admin.operasional.kemitraan.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
                         Kemitraan
-                    </a>
-                    <a href="{{ route('admin.operasional.karir.index') }}"
-                       class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
-                              {{ request()->routeIs('admin.operasional.karir.*') ? 'bg-green-600 font-semibold' : 'hover:bg-green-700' }}">
-                        Lamaran Karir
                     </a>
                 </div>
 
                 {{-- Super Admin --}}
                 @if(Auth::check() && Auth::user()->role === 'superadmin')
                 <div class="pt-3">
-                    <p class="text-xs text-green-400 uppercase tracking-widest px-3 mb-1">Super Admin</p>
+                    <p class="text-xs text-[#02A6E0] uppercase tracking-widest px-3 mb-1">Super Admin</p>
 
                     <a href="{{ route('admin.superadmin.user.index') }}"
                        class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
-                              {{ request()->routeIs('admin.superadmin.user.*') ? 'bg-green-600 font-semibold' : 'hover:bg-green-700' }}">
+                              {{ request()->routeIs('admin.superadmin.user.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
                         Manajemen User
                     </a>
                 </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Markom;
 
 use App\Http\Controllers\Controller;
 use App\Models\HeroSlider;
+use App\Models\HomeStat;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -12,7 +13,32 @@ class HomeController extends Controller
     public function index()
     {
         $sliders = HeroSlider::orderBy('order')->get();
-        return view('admin.markom.home.index', compact('sliders'));
+        $stats   = HomeStat::orderBy('order')->get();
+        return view('admin.markom.home.index', compact('sliders', 'stats'));
+    }
+
+    public function updateStats(Request $request)
+    {
+        $request->validate([
+            'stats'              => 'required|array',
+            'stats.*.key'        => 'required|string',
+            'stats.*.value'      => 'required|string|max:50',
+            'stats.*.label'      => 'required|string|max:100',
+            'stats.*.icon'       => 'required|in:users,heart,location',
+            'stats.*.description'=> 'nullable|string|max:255',
+        ]);
+
+        foreach ($request->stats as $item) {
+            HomeStat::where('key', $item['key'])->update([
+                'value'       => $item['value'],
+                'label'       => $item['label'],
+                'icon'        => $item['icon'],
+                'description' => $item['description'] ?? null,
+            ]);
+        }
+
+        return redirect()->route('admin.markom.home.index')
+            ->with('success', 'Data penyebaran berhasil diperbarui.');
     }
 
     public function store(Request $request)

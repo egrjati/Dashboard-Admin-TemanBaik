@@ -82,6 +82,81 @@
         </table>
     </div>
 
+    {{-- Section Penyebaran --}}
+    <div class="mt-10">
+        <div class="flex items-center justify-between mb-6">
+            <p class="text-sm text-gray-500">Section Penyebaran</p>
+        </div>
+
+        <form action="{{ route('admin.markom.home.updateStats') }}" method="POST">
+            @csrf
+            @method('PUT')
+
+            <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+                <table class="w-full text-sm text-left">
+                    <thead class="bg-gray-50 text-gray-500 uppercase text-xs tracking-wider">
+                        <tr>
+                            <th class="px-4 py-3">Key</th>
+                            <th class="px-4 py-3">Nilai (Value)</th>
+                            <th class="px-4 py-3">Label</th>
+                            <th class="px-4 py-3">Icon</th>
+                            <th class="px-4 py-3">Deskripsi (Tooltip)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        @forelse($stats as $i => $stat)
+                            <tr class="hover:bg-gray-50 transition">
+                                <input type="hidden" name="stats[{{ $i }}][key]" value="{{ $stat->key }}">
+                                <td class="px-4 py-3 text-gray-400 font-mono text-xs">{{ $stat->key }}</td>
+                                <td class="px-4 py-3">
+                                    <input type="text" name="stats[{{ $i }}][value]"
+                                           value="{{ $stat->value }}"
+                                           class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#02A6E0]/40 focus:border-[#02A6E0]"
+                                           placeholder="cth: 1,2 Jt+" required>
+                                </td>
+                                <td class="px-4 py-3">
+                                    <input type="text" name="stats[{{ $i }}][label]"
+                                           value="{{ $stat->label }}"
+                                           class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#02A6E0]/40 focus:border-[#02A6E0]"
+                                           placeholder="cth: PENERIMA MANFAAT" required>
+                                </td>
+                                <td class="px-4 py-3">
+                                    <select name="stats[{{ $i }}][icon]"
+                                            class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#02A6E0]/40 focus:border-[#02A6E0]" required>
+                                        <option value="users"    {{ $stat->icon === 'users'    ? 'selected' : '' }}>👥 Users</option>
+                                        <option value="heart"    {{ $stat->icon === 'heart'    ? 'selected' : '' }}>❤️ Heart</option>
+                                        <option value="location" {{ $stat->icon === 'location' ? 'selected' : '' }}>📍 Location</option>
+                                    </select>
+                                </td>
+                                <td class="px-4 py-3">
+                                    <input type="text" name="stats[{{ $i }}][description]"
+                                           value="{{ $stat->description }}"
+                                           class="w-full border border-gray-300 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#02A6E0]/40 focus:border-[#02A6E0]"
+                                           placeholder="cth: Total individu yang telah menerima manfaat...">
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="3" class="px-4 py-12 text-center text-gray-400 text-sm">
+                                    Data penyebaran belum tersedia. Jalankan seeder terlebih dahulu.
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+
+            @if($stats->isNotEmpty())
+                <div class="mt-4 flex justify-end">
+                    <button type="submit"
+                            class="inline-flex items-center gap-2 bg-[#02A6E0] hover:bg-[#028AC9] text-white text-sm font-semibold px-6 py-2.5 rounded-lg transition">
+                        Simpan Perubahan
+                    </button>
+                </div>
+            @endif
+        </form>
+    </div>
+
     {{-- Modal --}}
     <div id="modal-overlay"
          class="fixed inset-0 bg-black/50 z-50 items-center justify-center hidden"

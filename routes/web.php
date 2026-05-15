@@ -33,6 +33,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         // Markom
         Route::prefix('markom')->name('markom.')->group(function () {
             Route::resource('home', HomeController::class);
+            Route::put('home-stats', [HomeController::class, 'updateStats'])->name('home.updateStats');
             Route::resource('article', ArticleController::class);
             Route::resource('news', NewsController::class);
             Route::resource('program', ProgramController::class);

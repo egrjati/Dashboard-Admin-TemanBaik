@@ -1,8 +1,15 @@
 <?php
 
 use App\Models\HeroSlider;
+use App\Models\HomeStat;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
+
+Route::get('/home-stats', function () {
+    return response()->json(
+        HomeStat::orderBy('order')->get(['key', 'value', 'label', 'icon', 'description'])
+    );
+});
 
 Route::get('/hero-sliders', function () {
     $sliders = HeroSlider::where('is_active', true)

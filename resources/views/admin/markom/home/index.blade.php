@@ -157,6 +157,205 @@
         </form>
     </div>
 
+    {{-- Section Testimoni --}}
+    <div class="mt-10">
+        <div class="flex items-center justify-between mb-6">
+            <p class="text-sm text-gray-500">Section Testimoni</p>
+            <button onclick="openTestimonialModal()"
+                    class="inline-flex items-center gap-2 bg-[#02A6E0] hover:bg-[#028AC9] text-white text-sm font-semibold px-4 py-2 rounded-lg transition">
+                + Tambah Testimoni
+            </button>
+        </div>
+
+        @if($testimonials->isEmpty())
+            <div class="bg-white rounded-xl shadow-sm px-6 py-12 text-center text-gray-400 text-sm">
+                Belum ada testimoni. Klik "+ Tambah Testimoni" untuk memulai.
+            </div>
+        @else
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                @foreach($testimonials as $t)
+                    @php
+                        $initials = collect(explode(' ', $t->name))->map(fn($w) => strtoupper($w[0]))->take(2)->join('');
+                        $roleBadge = match($t->role) {
+                            'Donatur'          => 'bg-[#02A6E0]/10 text-[#02A6E0]',
+                            'Penerima Manfaat' => 'bg-[#213F9A]/10 text-[#213F9A]',
+                            'Mitra'            => 'text-white',
+                            default            => 'bg-gray-100 text-gray-500',
+                        };
+                        $roleStyle = $t->role === 'Mitra'
+                            ? 'background: linear-gradient(135deg, #02A6E0 0%, #213F9A 100%);'
+                            : '';
+                    @endphp
+                    <div class="bg-white rounded-xl border border-gray-100 shadow-sm p-5 flex flex-col gap-3 {{ $t->is_active ? '' : 'opacity-50' }}">
+                        {{-- Top: role badge + status --}}
+                        <div class="flex items-center justify-between">
+                            <span class="inline-flex items-center text-[10px] font-bold uppercase tracking-wider px-2.5 py-1 rounded-full {{ $roleBadge }}"
+                                  style="{{ $roleStyle }}">
+                                {{ $t->role }}
+                            </span>
+                            @if(!$t->is_active)
+                                <span class="text-[10px] text-gray-400 font-medium">Nonaktif</span>
+                            @endif
+                        </div>
+
+                        {{-- Quote --}}
+                        <p class="text-slate-500 text-xs leading-relaxed italic line-clamp-3">
+                            &ldquo;{{ $t->quote }}&rdquo;
+                        </p>
+
+                        {{-- Divider --}}
+                        <div class="h-px bg-gray-100"></div>
+
+                        {{-- Author --}}
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-8 h-8 rounded-full flex items-center justify-center text-white font-bold text-xs shrink-0"
+                                 style="background: linear-gradient(135deg, #02A6E0 0%, #213F9A 100%)">
+                                {{ $initials }}
+                            </div>
+                            <div class="min-w-0">
+                                <p class="font-semibold text-gray-800 text-xs truncate">{{ $t->name }}</p>
+                                <p class="text-gray-400 text-xs truncate">{{ $t->location }}</p>
+                            </div>
+                        </div>
+
+                        {{-- Actions --}}
+                        <div class="flex items-center gap-3 pt-1">
+                            <button onclick="openTestimonialModal({{ $t->id }}, '{{ addslashes($t->name) }}', '{{ addslashes($t->role) }}', '{{ addslashes($t->location) }}', {{ $t->order }}, {{ $t->is_active ? 'true' : 'false' }}, '{{ addslashes($t->quote) }}')"
+                                    class="text-xs font-semibold text-[#02A6E0] hover:underline">
+                                Edit
+                            </button>
+                            <form action="{{ route('admin.markom.testimonial.destroy', $t) }}" method="POST"
+                                  onsubmit="return confirm('Hapus testimoni ini?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-xs font-semibold text-red-400 hover:underline">Hapus</button>
+                            </form>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @endif
+    </div>
+
+    {{-- Modal Testimoni --}}
+    <div id="testimonial-modal-overlay"
+         class="fixed inset-0 bg-black/50 z-50 items-center justify-center hidden"
+         onclick="if(event.target===this) closeTestimonialModal()">
+
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto">
+
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 sticky top-0 bg-white rounded-t-2xl">
+                <h3 id="testimonial-modal-title" class="text-base font-semibold text-gray-800">Tambah Testimoni</h3>
+                <button onclick="closeTestimonialModal()" class="text-gray-400 hover:text-gray-600 text-xl leading-none">&times;</button>
+            </div>
+
+            <form id="testimonial-form"
+                  action="{{ route('admin.markom.testimonial.store') }}"
+                  method="POST"
+                  class="px-6 py-5 space-y-4">
+                @csrf
+                <input type="hidden" name="_method" id="testimonial-method" value="POST">
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div class="col-span-2">
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Nama <span class="text-red-500">*</span></label>
+                        <input type="text" name="name" id="t-name"
+                               class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#02A6E0]/30 focus:border-[#02A6E0]"
+                               placeholder="cth: Andini Pratama" required>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Role <span class="text-red-500">*</span></label>
+                        <select name="role" id="t-role"
+                                class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#02A6E0]/30 focus:border-[#02A6E0]" required>
+                            <option value="Donatur">Donatur</option>
+                            <option value="Penerima Manfaat">Penerima Manfaat</option>
+                            <option value="Mitra">Mitra</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Lokasi <span class="text-red-500">*</span></label>
+                        <input type="text" name="location" id="t-location"
+                               class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#02A6E0]/30 focus:border-[#02A6E0]"
+                               placeholder="cth: Jakarta" required>
+                    </div>
+                    <div class="col-span-2">
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Kutipan <span class="text-red-500">*</span></label>
+                        <textarea name="quote" id="t-quote" rows="3"
+                                  class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#02A6E0]/30 focus:border-[#02A6E0] resize-none"
+                                  placeholder="Tulis testimoni di sini..." required></textarea>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Urutan</label>
+                        <input type="number" name="order" id="t-order" min="0" value="0"
+                               class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#02A6E0]/30 focus:border-[#02A6E0]">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Status</label>
+                        <select name="is_active" id="t-status"
+                                class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#02A6E0]/30 focus:border-[#02A6E0]">
+                            <option value="1">Aktif</option>
+                            <option value="0">Nonaktif</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex gap-3 pt-1">
+                    <button type="submit"
+                            class="flex-1 bg-[#02A6E0] hover:bg-[#028AC9] text-white text-sm font-semibold py-2.5 rounded-lg transition">
+                        Simpan
+                    </button>
+                    <button type="button" onclick="closeTestimonialModal()"
+                            class="flex-1 border border-gray-200 text-gray-600 hover:bg-gray-50 text-sm font-semibold py-2.5 rounded-lg transition">
+                        Batal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const testimonialStoreUrl   = "{{ route('admin.markom.testimonial.store') }}";
+        const testimonialUpdateBase = "{{ url('admin/markom/testimonial') }}";
+
+        function openTestimonialModal(id = null, name = '', role = 'Donatur', location = '', order = 0, isActive = true, quote = '') {
+            const overlay = document.getElementById('testimonial-modal-overlay');
+            const form    = document.getElementById('testimonial-form');
+
+            if (id) {
+                document.getElementById('testimonial-modal-title').textContent = 'Edit Testimoni';
+                form.action = testimonialUpdateBase + '/' + id;
+                document.getElementById('testimonial-method').value = 'PUT';
+            } else {
+                document.getElementById('testimonial-modal-title').textContent = 'Tambah Testimoni';
+                form.action = testimonialStoreUrl;
+                document.getElementById('testimonial-method').value = 'POST';
+            }
+
+            document.getElementById('t-name').value     = name;
+            document.getElementById('t-role').value     = role;
+            document.getElementById('t-location').value = location;
+            document.getElementById('t-order').value    = order;
+            document.getElementById('t-status').value   = isActive ? '1' : '0';
+            document.getElementById('t-quote').value    = quote;
+
+            overlay.classList.remove('hidden');
+            overlay.classList.add('flex');
+        }
+
+        function closeTestimonialModal() {
+            const overlay = document.getElementById('testimonial-modal-overlay');
+            overlay.classList.add('hidden');
+            overlay.classList.remove('flex');
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+                closeTestimonialModal();
+            }
+        });
+    </script>
+
     {{-- Modal --}}
     <div id="modal-overlay"
          class="fixed inset-0 bg-black/50 z-50 items-center justify-center hidden"
@@ -310,10 +509,6 @@
             reader.readAsDataURL(file);
         });
 
-        // Tutup modal dengan tombol Escape
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeModal();
-        });
     </script>
 
 @endsection

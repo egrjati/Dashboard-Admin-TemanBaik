@@ -2,8 +2,17 @@
 
 use App\Models\HeroSlider;
 use App\Models\HomeStat;
+use App\Models\HomeTestimonial;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
+
+Route::get('/home-testimonials', function () {
+    return response()->json(
+        HomeTestimonial::where('is_active', true)
+            ->orderBy('order')
+            ->get(['id', 'name', 'role', 'location', 'quote'])
+    );
+});
 
 Route::get('/home-stats', function () {
     return response()->json(

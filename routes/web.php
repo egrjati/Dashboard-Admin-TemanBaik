@@ -32,7 +32,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
 
         // Markom
         Route::prefix('markom')->name('markom.')->group(function () {
-            Route::resource('home', HomeController::class)->only(['index', 'edit', 'update']);
+            Route::resource('home', HomeController::class);
             Route::resource('article', ArticleController::class);
             Route::resource('news', NewsController::class);
             Route::resource('program', ProgramController::class);

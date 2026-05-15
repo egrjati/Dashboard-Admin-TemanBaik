@@ -13,6 +13,11 @@ return new class extends Migration
     {
         Schema::create('home_sliders', function (Blueprint $table) {
             $table->id();
+            $table->string('title')->nullable();
+            $table->string('subtitle')->nullable();
+            $table->string('image');        // path file gambar
+            $table->integer('order')->default(0);  // urutan tampil
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

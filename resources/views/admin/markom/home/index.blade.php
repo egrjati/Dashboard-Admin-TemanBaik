@@ -352,7 +352,240 @@
             if (e.key === 'Escape') {
                 closeModal();
                 closeTestimonialModal();
+                closeProgramModal();
             }
+        });
+    </script>
+
+    {{-- Section Highlight Program --}}
+    <div class="mt-10">
+        <div class="flex items-center justify-between mb-6">
+            <p class="text-sm text-gray-500">Section Highlight Program</p>
+            <button onclick="openProgramModal()"
+                    class="inline-flex items-center gap-2 bg-[#02A6E0] hover:bg-[#028AC9] text-white text-sm font-semibold px-4 py-2 rounded-lg transition">
+                + Tambah Program
+            </button>
+        </div>
+
+        @if($highlightPrograms->isEmpty())
+            <div class="bg-white rounded-xl shadow-sm px-6 py-12 text-center text-gray-400 text-sm">
+                Belum ada program. Klik "+ Tambah Program" untuk memulai.
+            </div>
+        @else
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                @foreach($highlightPrograms as $prog)
+                    <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden flex flex-col {{ $prog->is_active ? '' : 'opacity-50' }}">
+
+                        {{-- Thumbnail --}}
+                        <div class="relative h-36 bg-gray-100 overflow-hidden">
+                            @if($prog->image)
+                                <img src="{{ Storage::url($prog->image) }}"
+                                     alt="{{ $prog->label }}"
+                                     class="w-full h-full object-cover">
+                            @else
+                                <img src="https://picsum.photos/seed/{{ Str::slug($prog->label) }}/600/400"
+                                     alt="{{ $prog->label }}"
+                                     class="w-full h-full object-cover">
+                            @endif
+                            {{-- Label overlay --}}
+                            <div class="absolute bottom-0 left-0 right-0 bg-[#02A6E0] py-1.5 px-3 text-center">
+                                <span class="text-white font-bold text-xs uppercase tracking-widest">{{ $prog->label }}</span>
+                            </div>
+                            @if(!$prog->is_active)
+                                <div class="absolute top-2 right-2 bg-gray-700/70 text-white text-[10px] font-medium px-2 py-0.5 rounded-full">
+                                    Nonaktif
+                                </div>
+                            @endif
+                        </div>
+
+                        {{-- Body --}}
+                        <div class="p-4 flex flex-col gap-2 flex-1">
+                            <p class="text-gray-500 text-xs leading-relaxed line-clamp-2">{{ $prog->desc }}</p>
+                            <p class="text-[#02A6E0] text-xs font-mono truncate">{{ $prog->href }}</p>
+                        </div>
+
+                        {{-- Actions --}}
+                        <div class="px-4 pb-4 flex items-center gap-3">
+                            <button onclick="openProgramModal(
+                                        {{ $prog->id }},
+                                        '{{ addslashes($prog->label) }}',
+                                        '{{ addslashes($prog->desc) }}',
+                                        '{{ addslashes($prog->href) }}',
+                                        {{ $prog->order }},
+                                        {{ $prog->is_active ? 'true' : 'false' }},
+                                        '{{ $prog->image ? Storage::url($prog->image) : '' }}'
+                                    )"
+                                    class="text-xs font-semibold text-[#02A6E0] hover:underline">
+                                Edit
+                            </button>
+                            <form action="{{ route('admin.markom.highlight-program.destroy', $prog) }}" method="POST"
+                                  onsubmit="return confirm('Hapus program ini?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="text-xs font-semibold text-red-400 hover:underline">Hapus</button>
+                            </form>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @endif
+    </div>
+
+    {{-- Modal Highlight Program --}}
+    <div id="program-modal-overlay"
+         class="fixed inset-0 bg-black/50 z-50 items-center justify-center hidden"
+         onclick="if(event.target===this) closeProgramModal()">
+
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto">
+
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 sticky top-0 bg-white rounded-t-2xl">
+                <h3 id="program-modal-title" class="text-base font-semibold text-gray-800">Tambah Program</h3>
+                <button onclick="closeProgramModal()" class="text-gray-400 hover:text-gray-600 text-xl leading-none">&times;</button>
+            </div>
+
+            <form id="program-form"
+                  action="{{ route('admin.markom.highlight-program.store') }}"
+                  method="POST"
+                  enctype="multipart/form-data"
+                  class="px-6 py-5 space-y-4">
+                @csrf
+                <input type="hidden" name="_method" id="program-method" value="POST">
+
+                {{-- Preview gambar --}}
+                <div id="program-preview-wrap" class="hidden">
+                    <p class="text-xs text-gray-500 mb-1">Preview Foto</p>
+                    <img id="program-preview-img" src="#" alt="preview"
+                         class="w-full h-32 object-cover rounded-lg">
+                </div>
+
+                {{-- Upload foto --}}
+                <div>
+                    <label class="block text-xs font-medium text-gray-600 mb-1">
+                        Foto
+                        <span id="prog-img-required" class="text-red-500">*</span>
+                        <span id="prog-img-optional" class="hidden text-gray-400 font-normal">(opsional)</span>
+                    </label>
+                    <input type="file" name="image" id="prog-image" accept="image/jpeg,image/png,image/webp"
+                           class="block w-full text-xs text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#02A6E0]/10 file:text-[#02A6E0] hover:file:bg-[#02A6E0]/20">
+                    <p class="text-xs text-gray-400 mt-1">JPG, PNG, WEBP. Maks 3MB. Jika kosong saat edit, foto tidak berubah.</p>
+                </div>
+
+                {{-- Label --}}
+                <div>
+                    <label class="block text-xs font-medium text-gray-600 mb-1">Nama Program <span class="text-red-500">*</span></label>
+                    <input type="text" name="label" id="prog-label"
+                           class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#02A6E0]/30 focus:border-[#02A6E0]"
+                           placeholder="cth: Bidang Pendidikan" required>
+                </div>
+
+                {{-- Deskripsi --}}
+                <div>
+                    <label class="block text-xs font-medium text-gray-600 mb-1">Deskripsi <span class="text-red-500">*</span></label>
+                    <textarea name="desc" id="prog-desc" rows="3"
+                              class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#02A6E0]/30 focus:border-[#02A6E0] resize-none"
+                              placeholder="Deskripsi singkat program..." required></textarea>
+                </div>
+
+                {{-- Href --}}
+                <div>
+                    <label class="block text-xs font-medium text-gray-600 mb-1">Link Program <span class="text-red-500">*</span></label>
+                    <input type="text" name="href" id="prog-href"
+                           class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#02A6E0]/30 focus:border-[#02A6E0]"
+                           placeholder="cth: /program/pendidikan" required>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    {{-- Urutan --}}
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Urutan</label>
+                        <input type="number" name="order" id="prog-order" min="0" value="0"
+                               class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#02A6E0]/30 focus:border-[#02A6E0]">
+                    </div>
+                    {{-- Status --}}
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Status</label>
+                        <select name="is_active" id="prog-status"
+                                class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#02A6E0]/30 focus:border-[#02A6E0]">
+                            <option value="1">Aktif</option>
+                            <option value="0">Nonaktif</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex gap-3 pt-1">
+                    <button type="submit"
+                            class="flex-1 bg-[#02A6E0] hover:bg-[#028AC9] text-white text-sm font-semibold py-2.5 rounded-lg transition">
+                        Simpan
+                    </button>
+                    <button type="button" onclick="closeProgramModal()"
+                            class="flex-1 border border-gray-200 text-gray-600 hover:bg-gray-50 text-sm font-semibold py-2.5 rounded-lg transition">
+                        Batal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const programStoreUrl   = "{{ route('admin.markom.highlight-program.store') }}";
+        const programUpdateBase = "{{ url('admin/markom/highlight-program') }}";
+
+        function openProgramModal(id = null, label = '', desc = '', href = '', order = 0, isActive = true, imageUrl = '') {
+            const overlay = document.getElementById('program-modal-overlay');
+            const form    = document.getElementById('program-form');
+            const imgReq  = document.getElementById('prog-img-required');
+            const imgOpt  = document.getElementById('prog-img-optional');
+            const prevWrap = document.getElementById('program-preview-wrap');
+            const prevImg  = document.getElementById('program-preview-img');
+
+            document.getElementById('prog-image').value = '';
+
+            if (id) {
+                document.getElementById('program-modal-title').textContent = 'Edit Program';
+                form.action = programUpdateBase + '/' + id;
+                document.getElementById('program-method').value = 'PUT';
+                imgReq.classList.add('hidden');
+                imgOpt.classList.remove('hidden');
+                if (imageUrl) {
+                    prevImg.src = imageUrl;
+                    prevWrap.classList.remove('hidden');
+                } else {
+                    prevWrap.classList.add('hidden');
+                }
+            } else {
+                document.getElementById('program-modal-title').textContent = 'Tambah Program';
+                form.action = programStoreUrl;
+                document.getElementById('program-method').value = 'POST';
+                imgReq.classList.remove('hidden');
+                imgOpt.classList.add('hidden');
+                prevWrap.classList.add('hidden');
+                prevImg.src = '#';
+            }
+
+            document.getElementById('prog-label').value  = label;
+            document.getElementById('prog-desc').value   = desc;
+            document.getElementById('prog-href').value   = href;
+            document.getElementById('prog-order').value  = order;
+            document.getElementById('prog-status').value = isActive ? '1' : '0';
+
+            overlay.classList.remove('hidden');
+            overlay.classList.add('flex');
+        }
+
+        function closeProgramModal() {
+            document.getElementById('program-modal-overlay').classList.add('hidden');
+            document.getElementById('program-modal-overlay').classList.remove('flex');
+        }
+
+        document.getElementById('prog-image').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                document.getElementById('program-preview-img').src = ev.target.result;
+                document.getElementById('program-preview-wrap').classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
         });
     </script>
 

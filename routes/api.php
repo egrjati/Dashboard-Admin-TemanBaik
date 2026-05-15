@@ -3,8 +3,24 @@
 use App\Models\HeroSlider;
 use App\Models\HomeStat;
 use App\Models\HomeTestimonial;
+use App\Models\HighlightProgram;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Storage;
+
+Route::get('/highlight-programs', function () {
+    return response()->json(
+        HighlightProgram::where('is_active', true)
+            ->orderBy('order')
+            ->get(['id', 'label', 'desc', 'image', 'href'])
+            ->map(fn($p) => [
+                'id'    => $p->id,
+                'label' => $p->label,
+                'desc'  => $p->desc,
+                'image' => $p->image ? Storage::disk('public')->url($p->image) : null,
+                'href'  => $p->href,
+            ])
+    );
+});
 
 Route::get('/home-testimonials', function () {
     return response()->json(

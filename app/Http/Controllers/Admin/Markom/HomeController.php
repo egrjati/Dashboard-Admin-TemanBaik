@@ -12,10 +12,11 @@ class HomeController extends Controller
 {
     public function index()
     {
-        $sliders      = HeroSlider::orderBy('order')->get();
-        $stats        = HomeStat::orderBy('order')->get();
-        $testimonials = \App\Models\HomeTestimonial::orderBy('order')->get();
-        return view('admin.markom.home.index', compact('sliders', 'stats', 'testimonials'));
+        $sliders          = HeroSlider::orderBy('order')->get();
+        $stats            = HomeStat::orderBy('order')->get();
+        $testimonials     = \App\Models\HomeTestimonial::orderBy('order')->get();
+        $highlightPrograms = \App\Models\HighlightProgram::orderBy('order')->get();
+        return view('admin.markom.home.index', compact('sliders', 'stats', 'testimonials', 'highlightPrograms'));
     }
 
     public function updateStats(Request $request)

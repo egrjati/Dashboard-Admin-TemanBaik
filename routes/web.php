@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\Markom\VolunteerController;
 use App\Http\Controllers\Admin\Markom\FaqController;
 use App\Http\Controllers\Admin\Markom\MitraController;
 use App\Http\Controllers\Admin\Markom\HomeTestimonialController;
+use App\Http\Controllers\Admin\Markom\HighlightProgramController;
 use App\Http\Controllers\Admin\Operasional\DonaturController;
 use App\Http\Controllers\Admin\Operasional\KonfirmasiDonasiController;
 use App\Http\Controllers\Admin\Operasional\BantuanController;
@@ -36,6 +37,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::resource('home', HomeController::class);
             Route::put('home-stats', [HomeController::class, 'updateStats'])->name('home.updateStats');
             Route::resource('testimonial', HomeTestimonialController::class)->only(['store', 'update', 'destroy']);
+            Route::resource('highlight-program', HighlightProgramController::class)->only(['store', 'update', 'destroy']);
             Route::resource('article', ArticleController::class);
             Route::resource('news', NewsController::class);
             Route::resource('program', ProgramController::class);

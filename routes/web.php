@@ -37,6 +37,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::prefix('markom')->name('markom.')->group(function () {
             Route::resource('home', HomeController::class);
             Route::put('home-stats', [HomeController::class, 'updateStats'])->name('home.updateStats');
+            Route::put('home-cta', [HomeController::class, 'updateCta'])->name('home.updateCta');
             Route::resource('testimonial', HomeTestimonialController::class)->only(['store', 'update', 'destroy']);
             Route::resource('highlight-program', HighlightProgramController::class)->only(['store', 'update', 'destroy']);
             Route::resource('home-partner', HomeMitraController::class)

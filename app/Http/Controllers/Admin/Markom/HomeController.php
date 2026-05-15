@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\HeroSlider;
 use App\Models\HomeStat;
 use App\Models\HomeMitra;
+use App\Models\HomeCta;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -18,7 +19,8 @@ class HomeController extends Controller
         $testimonials     = \App\Models\HomeTestimonial::orderBy('order')->get();
         $highlightPrograms = \App\Models\HighlightProgram::orderBy('order')->get();
         $partners          = HomeMitra::orderBy('order')->get();
-        return view('admin.markom.home.index', compact('sliders', 'stats', 'testimonials', 'highlightPrograms', 'partners'));
+        $cta               = HomeCta::first();
+        return view('admin.markom.home.index', compact('sliders', 'stats', 'testimonials', 'highlightPrograms', 'partners', 'cta'));
     }
 
     public function updateStats(Request $request)
@@ -43,6 +45,38 @@ class HomeController extends Controller
 
         return redirect()->route('admin.markom.home.index')
             ->with('success', 'Data penyebaran berhasil diperbarui.');
+    }
+
+    public function updateCta(Request $request)
+    {
+        $request->validate([
+            'heading_before'    => 'required|string|max:100',
+            'heading_highlight' => 'required|string|max:100',
+            'heading_after'     => 'required|string|max:100',
+            'body'              => 'required|string',
+            'button_label'      => 'required|string|max:60',
+            'button_href'       => 'required|string|max:255',
+            'bg_image'          => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'cartoon_image'     => 'nullable|image|mimes:jpg,jpeg,png,webp|max:3072',
+        ]);
+
+        $cta  = HomeCta::firstOrCreate([]);
+        $data = $request->only(['heading_before', 'heading_highlight', 'heading_after', 'body', 'button_label', 'button_href']);
+
+        if ($request->hasFile('bg_image')) {
+            if ($cta->bg_image) Storage::disk('public')->delete($cta->bg_image);
+            $data['bg_image'] = $request->file('bg_image')->store('home-cta', 'public');
+        }
+
+        if ($request->hasFile('cartoon_image')) {
+            if ($cta->cartoon_image) Storage::disk('public')->delete($cta->cartoon_image);
+            $data['cartoon_image'] = $request->file('cartoon_image')->store('home-cta', 'public');
+        }
+
+        $cta->update($data);
+
+        return redirect()->route('admin.markom.home.index')
+            ->with('success', 'CTA Relawan berhasil diperbarui.');
     }
 
     public function store(Request $request)

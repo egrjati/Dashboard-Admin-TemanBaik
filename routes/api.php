@@ -5,7 +5,24 @@ use App\Models\HomeStat;
 use App\Models\HomeTestimonial;
 use App\Models\HighlightProgram;
 use App\Models\HomeMitra;
+use App\Models\HomeCta;
 use Illuminate\Support\Facades\Route;
+
+Route::get('/home-cta', function () {
+    $cta = HomeCta::first();
+    if (!$cta) return response()->json(null);
+
+    return response()->json([
+        'heading_before'    => $cta->heading_before,
+        'heading_highlight' => $cta->heading_highlight,
+        'heading_after'     => $cta->heading_after,
+        'body'              => $cta->body,
+        'button_label'      => $cta->button_label,
+        'button_href'       => $cta->button_href,
+        'bg_image'          => $cta->bg_image    ? asset('storage/' . $cta->bg_image)      : null,
+        'cartoon_image'     => $cta->cartoon_image ? asset('storage/' . $cta->cartoon_image) : null,
+    ]);
+});
 
 Route::get('/home-partners', function () {
     return response()->json(

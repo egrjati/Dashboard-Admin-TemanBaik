@@ -12,17 +12,30 @@
         </div>
     @endif
 
-    {{-- Header --}}
-    <div class="flex items-center justify-between mb-6">
-        <p class="text-sm text-gray-500">Hero Section</p>
-        <button onclick="openModal()"
-                class="inline-flex items-center gap-2 bg-[#02A6E0] hover:bg-[#028AC9] text-white text-sm font-semibold px-4 py-2 rounded-lg transition">
-            + Tambah Slide
-        </button>
-    </div>
-
-    {{-- Table --}}
-    <div class="bg-white rounded-xl shadow-sm overflow-hidden">
+    {{-- Section Hero Slider --}}
+    <div class="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gradient-to-r from-slate-50 to-white">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+                     style="background: linear-gradient(135deg, rgba(2,166,224,0.12) 0%, rgba(33,63,154,0.08) 100%); border: 1px solid rgba(2,166,224,0.2)">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-[18px] h-[18px]" fill="none" viewBox="0 0 24 24" stroke="#02A6E0" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-gray-800 text-sm">Hero Slider</h3>
+                    <p class="text-xs text-gray-400 mt-0.5">Kelola gambar slide utama di beranda</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="text-xs text-gray-400 bg-gray-100 px-2.5 py-1 rounded-full font-medium">{{ $sliders->count() }} slide</span>
+                <button onclick="openModal()"
+                        class="inline-flex items-center gap-1.5 bg-[#02A6E0] hover:bg-[#028AC9] text-white text-xs font-semibold px-3.5 py-2 rounded-lg transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                    Tambah Slide
+                </button>
+            </div>
+        </div>
         <table class="w-full text-sm text-left">
             <thead class="bg-gray-50 text-gray-500 uppercase text-xs tracking-wider">
                 <tr>
@@ -83,17 +96,27 @@
     </div>
 
     {{-- Section Penyebaran --}}
-    <div class="mt-10">
-        <div class="flex items-center justify-between mb-6">
-            <p class="text-sm text-gray-500">Section Penyebaran</p>
+    <div class="mt-8 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gradient-to-r from-slate-50 to-white">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+                     style="background: linear-gradient(135deg, rgba(2,166,224,0.12) 0%, rgba(33,63,154,0.08) 100%); border: 1px solid rgba(2,166,224,0.2)">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-[18px] h-[18px]" fill="none" viewBox="0 0 24 24" stroke="#02A6E0" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-gray-800 text-sm">Section Penyebaran</h3>
+                    <p class="text-xs text-gray-400 mt-0.5">Statistik dampak program yang tampil di beranda</p>
+                </div>
+            </div>
         </div>
 
         <form action="{{ route('admin.markom.home.updateStats') }}" method="POST">
             @csrf
             @method('PUT')
 
-            <div class="bg-white rounded-xl shadow-sm overflow-hidden">
-                <table class="w-full text-sm text-left">
+            <table class="w-full text-sm text-left">
                     <thead class="bg-gray-50 text-gray-500 uppercase text-xs tracking-wider">
                         <tr>
                             <th class="px-4 py-3">Key</th>
@@ -144,12 +167,11 @@
                         @endforelse
                     </tbody>
                 </table>
-            </div>
 
             @if($stats->isNotEmpty())
-                <div class="mt-4 flex justify-end">
+                <div class="px-6 py-4 border-t border-gray-100 flex justify-end bg-gray-50/50">
                     <button type="submit"
-                            class="inline-flex items-center gap-2 bg-[#02A6E0] hover:bg-[#028AC9] text-white text-sm font-semibold px-6 py-2.5 rounded-lg transition">
+                            class="inline-flex items-center gap-2 bg-[#02A6E0] hover:bg-[#028AC9] text-white text-sm font-semibold px-5 py-2 rounded-lg transition">
                         Simpan Perubahan
                     </button>
                 </div>
@@ -158,17 +180,33 @@
     </div>
 
     {{-- Section Testimoni --}}
-    <div class="mt-10">
-        <div class="flex items-center justify-between mb-6">
-            <p class="text-sm text-gray-500">Section Testimoni</p>
-            <button onclick="openTestimonialModal()"
-                    class="inline-flex items-center gap-2 bg-[#02A6E0] hover:bg-[#028AC9] text-white text-sm font-semibold px-4 py-2 rounded-lg transition">
-                + Tambah Testimoni
-            </button>
+    <div class="mt-8 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gradient-to-r from-slate-50 to-white">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+                     style="background: linear-gradient(135deg, rgba(2,166,224,0.12) 0%, rgba(33,63,154,0.08) 100%); border: 1px solid rgba(2,166,224,0.2)">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="#02A6E0" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z" />
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-gray-800 text-sm">Section Testimoni</h3>
+                    <p class="text-xs text-gray-400 mt-0.5">Ulasan dari donatur, penerima manfaat & mitra</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="text-xs text-gray-400 bg-gray-100 px-2.5 py-1 rounded-full font-medium">{{ $testimonials->count() }} testimoni</span>
+                <button onclick="openTestimonialModal()"
+                        class="inline-flex items-center gap-1.5 bg-[#02A6E0] hover:bg-[#028AC9] text-white text-xs font-semibold px-3.5 py-2 rounded-lg transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                    Tambah Testimoni
+                </button>
+            </div>
         </div>
 
+        <div class="p-6">
         @if($testimonials->isEmpty())
-            <div class="bg-white rounded-xl shadow-sm px-6 py-12 text-center text-gray-400 text-sm">
+            <div class="py-10 text-center text-gray-400 text-sm">
                 Belum ada testimoni. Klik "+ Tambah Testimoni" untuk memulai.
             </div>
         @else
@@ -235,6 +273,7 @@
                 @endforeach
             </div>
         @endif
+        </div>{{-- /p-6 --}}
     </div>
 
     {{-- Modal Testimoni --}}
@@ -354,22 +393,210 @@
                 closeTestimonialModal();
                 closeProgramModal();
                 closeMitraModal();
+                closeCtaModal();
             }
         });
     </script>
 
+    {{-- Modal CTA --}}
+    <div id="cta-modal-overlay"
+         class="fixed inset-0 bg-black/50 z-50 items-center justify-center hidden"
+         onclick="if(event.target===this) closeCtaModal()">
+
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-lg mx-4 max-h-[90vh] overflow-y-auto">
+
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100 sticky top-0 bg-white rounded-t-2xl">
+                <h3 class="text-base font-semibold text-gray-800">Edit CTA Relawan</h3>
+                <button onclick="closeCtaModal()" class="text-gray-400 hover:text-gray-600 text-xl leading-none">&times;</button>
+            </div>
+
+            <form id="cta-form"
+                  action="{{ route('admin.markom.home.updateCta') }}"
+                  method="POST"
+                  enctype="multipart/form-data"
+                  class="px-6 py-5 space-y-4">
+                @csrf
+                @method('PUT')
+
+                {{-- Background Image --}}
+                <div>
+                    <label class="block text-xs font-medium text-gray-600 mb-1">
+                        Background Image
+                        <span class="text-gray-400 font-normal">(opsional — kosongkan jika tidak ingin mengganti)</span>
+                    </label>
+                    @if($cta && $cta->bg_image)
+                        <div id="cta-bg-current" class="mb-2">
+                            <img src="{{ asset('storage/' . $cta->bg_image) }}" alt="BG saat ini"
+                                 class="w-full h-20 object-cover rounded-lg">
+                            <p class="text-[10px] text-gray-400 mt-1">Gambar saat ini</p>
+                        </div>
+                    @endif
+                    <div id="cta-bg-preview-wrap" class="hidden mb-2">
+                        <img id="cta-bg-preview-img" src="#" alt="preview" class="w-full h-20 object-cover rounded-lg">
+                        <p class="text-[10px] text-gray-400 mt-1">Preview baru</p>
+                    </div>
+                    <input type="file" name="bg_image" id="cta-bg-image" accept="image/jpeg,image/png,image/webp"
+                           class="block w-full text-xs text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#213F9A]/10 file:text-[#213F9A] hover:file:bg-[#213F9A]/20">
+                    <p class="text-xs text-gray-400 mt-1">JPG, PNG, WEBP. Maks 5MB. Rekomendasi: 1600×600px landscape.</p>
+                </div>
+
+                {{-- Cartoon Image --}}
+                <div>
+                    <label class="block text-xs font-medium text-gray-600 mb-1">
+                        Gambar Kartun / Maskot
+                        <span class="text-gray-400 font-normal">(opsional)</span>
+                    </label>
+                    @if($cta && $cta->cartoon_image)
+                        <div class="mb-2">
+                            <img src="{{ asset('storage/' . $cta->cartoon_image) }}" alt="Kartun saat ini"
+                                 class="h-20 w-auto object-contain rounded-lg bg-gray-50 border border-gray-100 p-1">
+                            <p class="text-[10px] text-gray-400 mt-1">Gambar saat ini</p>
+                        </div>
+                    @endif
+                    <div id="cta-cartoon-preview-wrap" class="hidden mb-2">
+                        <img id="cta-cartoon-preview-img" src="#" alt="preview"
+                             class="h-20 w-auto object-contain rounded-lg bg-gray-50 border border-gray-100 p-1">
+                        <p class="text-[10px] text-gray-400 mt-1">Preview baru</p>
+                    </div>
+                    <input type="file" name="cartoon_image" id="cta-cartoon-image" accept="image/jpeg,image/png,image/webp"
+                           class="block w-full text-xs text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#02A6E0]/10 file:text-[#02A6E0] hover:file:bg-[#02A6E0]/20">
+                    <p class="text-xs text-gray-400 mt-1">JPG, PNG, WEBP. Maks 3MB. Gunakan PNG transparan untuk hasil terbaik.</p>
+                </div>
+
+                <div class="border-t border-gray-100 pt-4 space-y-4">
+                    {{-- Heading Before --}}
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Judul — Bagian Normal <span class="text-red-500">*</span></label>
+                        <input type="text" name="heading_before" id="cta-heading-before"
+                               value="{{ $cta->heading_before ?? '' }}"
+                               class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#213F9A]/30 focus:border-[#213F9A]"
+                               placeholder="cth: Jadi Bagian dari" required>
+                    </div>
+
+                    {{-- Heading Highlight --}}
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">
+                            Judul — Bagian Berwarna Biru <span class="text-red-500">*</span>
+                        </label>
+                        <input type="text" name="heading_highlight" id="cta-heading-highlight"
+                               value="{{ $cta->heading_highlight ?? '' }}"
+                               class="w-full border border-[#02A6E0]/40 rounded-lg px-3 py-2 text-sm text-[#02A6E0] font-semibold focus:outline-none focus:ring-2 focus:ring-[#02A6E0]/30 focus:border-[#02A6E0]"
+                               placeholder="cth: Kehebatan Mereka Berkontribusi" required>
+                    </div>
+
+                    {{-- Heading After --}}
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Judul — Bagian Akhir <span class="text-red-500">*</span></label>
+                        <input type="text" name="heading_after" id="cta-heading-after"
+                               value="{{ $cta->heading_after ?? '' }}"
+                               class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#213F9A]/30 focus:border-[#213F9A]"
+                               placeholder="cth: untuk Masyarakat" required>
+                    </div>
+
+                    {{-- Body --}}
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Deskripsi <span class="text-red-500">*</span></label>
+                        <textarea name="body" id="cta-body" rows="3"
+                                  class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#213F9A]/30 focus:border-[#213F9A] resize-none"
+                                  placeholder="Tulis deskripsi CTA..." required>{{ $cta->body ?? '' }}</textarea>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        {{-- Button Label --}}
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600 mb-1">Teks Tombol <span class="text-red-500">*</span></label>
+                            <input type="text" name="button_label" id="cta-button-label"
+                                   value="{{ $cta->button_label ?? '' }}"
+                                   class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#213F9A]/30 focus:border-[#213F9A]"
+                                   placeholder="cth: Gabung Sekarang" required>
+                        </div>
+                        {{-- Button Href --}}
+                        <div>
+                            <label class="block text-xs font-medium text-gray-600 mb-1">Link Tombol <span class="text-red-500">*</span></label>
+                            <input type="text" name="button_href" id="cta-button-href"
+                                   value="{{ $cta->button_href ?? '' }}"
+                                   class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#213F9A]/30 focus:border-[#213F9A]"
+                                   placeholder="cth: /kemitraan/volunteer" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="flex gap-3 pt-1">
+                    <button type="submit"
+                            class="flex-1 bg-[#213F9A] hover:bg-[#1a3480] text-white text-sm font-semibold py-2.5 rounded-lg transition">
+                        Simpan Perubahan
+                    </button>
+                    <button type="button" onclick="closeCtaModal()"
+                            class="flex-1 border border-gray-200 text-gray-600 hover:bg-gray-50 text-sm font-semibold py-2.5 rounded-lg transition">
+                        Batal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function openCtaModal() {
+            document.getElementById('cta-modal-overlay').classList.remove('hidden');
+            document.getElementById('cta-modal-overlay').classList.add('flex');
+        }
+
+        function closeCtaModal() {
+            document.getElementById('cta-modal-overlay').classList.add('hidden');
+            document.getElementById('cta-modal-overlay').classList.remove('flex');
+        }
+
+        document.getElementById('cta-bg-image').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                document.getElementById('cta-bg-preview-img').src = ev.target.result;
+                document.getElementById('cta-bg-preview-wrap').classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        });
+
+        document.getElementById('cta-cartoon-image').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                document.getElementById('cta-cartoon-preview-img').src = ev.target.result;
+                document.getElementById('cta-cartoon-preview-wrap').classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        });
+    </script>
+
     {{-- Section Highlight Program --}}
-    <div class="mt-10">
-        <div class="flex items-center justify-between mb-6">
-            <p class="text-sm text-gray-500">Section Highlight Program</p>
-            <button onclick="openProgramModal()"
-                    class="inline-flex items-center gap-2 bg-[#02A6E0] hover:bg-[#028AC9] text-white text-sm font-semibold px-4 py-2 rounded-lg transition">
-                + Tambah Program
-            </button>
+    <div class="mt-8 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gradient-to-r from-slate-50 to-white">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+                     style="background: linear-gradient(135deg, rgba(2,166,224,0.12) 0%, rgba(33,63,154,0.08) 100%); border: 1px solid rgba(2,166,224,0.2)">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="#02A6E0" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-gray-800 text-sm">Program Unggulan</h3>
+                    <p class="text-xs text-gray-400 mt-0.5">Program pilihan yang ditampilkan di beranda</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="text-xs text-gray-400 bg-gray-100 px-2.5 py-1 rounded-full font-medium">{{ $highlightPrograms->count() }} program</span>
+                <button onclick="openProgramModal()"
+                        class="inline-flex items-center gap-1.5 bg-[#02A6E0] hover:bg-[#028AC9] text-white text-xs font-semibold px-3.5 py-2 rounded-lg transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                    Tambah Program
+                </button>
+            </div>
         </div>
 
+        <div class="p-6">
         @if($highlightPrograms->isEmpty())
-            <div class="bg-white rounded-xl shadow-sm px-6 py-12 text-center text-gray-400 text-sm">
+            <div class="py-10 text-center text-gray-400 text-sm">
                 Belum ada program. Klik "+ Tambah Program" untuk memulai.
             </div>
         @else
@@ -430,20 +657,37 @@
                 @endforeach
             </div>
         @endif
+        </div>{{-- /p-6 --}}
     </div>
 
     {{-- Section Mitra --}}
-    <div class="mt-10">
-        <div class="flex items-center justify-between mb-6">
-            <p class="text-sm text-gray-500">Section Mitra Kami</p>
-            <button onclick="openMitraModal()"
-                    class="inline-flex items-center gap-2 bg-[#02A6E0] hover:bg-[#028AC9] text-white text-sm font-semibold px-4 py-2 rounded-lg transition">
-                + Tambah Mitra
-            </button>
+    <div class="mt-8 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gradient-to-r from-slate-50 to-white">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+                     style="background: linear-gradient(135deg, rgba(2,166,224,0.12) 0%, rgba(33,63,154,0.08) 100%); border: 1px solid rgba(2,166,224,0.2)">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="#02A6E0" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-gray-800 text-sm">Mitra Kami</h3>
+                    <p class="text-xs text-gray-400 mt-0.5">Logo mitra yang tampil di marquee beranda</p>
+                </div>
+            </div>
+            <div class="flex items-center gap-3">
+                <span class="text-xs text-gray-400 bg-gray-100 px-2.5 py-1 rounded-full font-medium">{{ $partners->count() }} mitra</span>
+                <button onclick="openMitraModal()"
+                        class="inline-flex items-center gap-1.5 bg-[#02A6E0] hover:bg-[#028AC9] text-white text-xs font-semibold px-3.5 py-2 rounded-lg transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+                    Tambah Mitra
+                </button>
+            </div>
         </div>
 
+        <div class="p-6">
         @if($partners->isEmpty())
-            <div class="bg-white rounded-xl shadow-sm px-6 py-12 text-center text-gray-400 text-sm">
+            <div class="py-10 text-center text-gray-400 text-sm">
                 Belum ada logo mitra. Klik "+ Tambah Mitra" untuk memulai.
             </div>
         @else
@@ -487,6 +731,77 @@
                     </div>
                 @endforeach
             </div>
+        @endif
+        </div>{{-- /p-6 --}}
+    </div>
+
+    {{-- Section CTA Relawan --}}
+    <div class="mt-8 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gradient-to-r from-slate-50 to-white">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+                     style="background: linear-gradient(135deg, rgba(33,63,154,0.12) 0%, rgba(2,166,224,0.08) 100%); border: 1px solid rgba(33,63,154,0.2)">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-4.5 h-4.5" fill="none" viewBox="0 0 24 24" stroke="#213F9A" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-gray-800 text-sm">CTA Relawan</h3>
+                    <p class="text-xs text-gray-400 mt-0.5">Banner ajakan bergabung sebagai relawan</p>
+                </div>
+            </div>
+            <button onclick="openCtaModal()"
+                    class="inline-flex items-center gap-1.5 bg-[#213F9A] hover:bg-[#1a3480] text-white text-xs font-semibold px-3.5 py-2 rounded-lg transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+                Edit CTA
+            </button>
+        </div>
+
+        @if($cta)
+        {{-- Preview strip --}}
+        <div class="relative h-28 overflow-hidden">
+                @if($cta->bg_image)
+                    <img src="{{ asset('storage/' . $cta->bg_image) }}" alt="BG"
+                         class="absolute inset-0 w-full h-full object-cover blur-sm scale-105">
+                @else
+                    <div class="absolute inset-0 bg-gradient-to-r from-[#EEF4FF] to-[#E6F7FE]"></div>
+                @endif
+                <div class="absolute inset-0 bg-white/50"></div>
+
+                <div class="relative h-full flex items-center gap-6 px-6">
+                    {{-- Cartoon thumb --}}
+                    <div class="shrink-0 w-16 h-16 rounded-xl overflow-hidden bg-[#02A6E0]/10 flex items-center justify-center border border-[#02A6E0]/20">
+                        @if($cta->cartoon_image)
+                            <img src="{{ asset('storage/' . $cta->cartoon_image) }}" alt="Kartun"
+                                 class="w-full h-full object-contain p-1">
+                        @else
+                            <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-[#02A6E0]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" />
+                            </svg>
+                        @endif
+                    </div>
+                    {{-- Text preview --}}
+                    <div class="min-w-0">
+                        <p class="font-bold text-[#213F9A] text-sm leading-snug truncate">
+                            {{ $cta->heading_before }}
+                            <span class="text-[#02A6E0]">{{ $cta->heading_highlight }}</span>
+                            {{ $cta->heading_after }}
+                        </p>
+                        <p class="text-gray-500 text-xs mt-1 line-clamp-2 leading-relaxed">{{ $cta->body }}</p>
+                    </div>
+                    {{-- Button preview --}}
+                    <div class="ml-auto shrink-0">
+                        <span class="inline-flex items-center gap-1.5 text-white text-xs font-semibold px-4 py-2 rounded-lg"
+                              style="background: linear-gradient(135deg, #02A6E0 0%, #213F9A 100%)">
+                            {{ $cta->button_label }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        @else
+        <div class="px-6 py-10 text-center text-gray-400 text-sm">
+            Belum ada data CTA. Klik "Edit CTA" untuk mengisi.
+        </div>
         @endif
     </div>
 

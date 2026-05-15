@@ -353,6 +353,7 @@
                 closeModal();
                 closeTestimonialModal();
                 closeProgramModal();
+                closeMitraModal();
             }
         });
     </script>
@@ -430,6 +431,196 @@
             </div>
         @endif
     </div>
+
+    {{-- Section Mitra --}}
+    <div class="mt-10">
+        <div class="flex items-center justify-between mb-6">
+            <p class="text-sm text-gray-500">Section Mitra Kami</p>
+            <button onclick="openMitraModal()"
+                    class="inline-flex items-center gap-2 bg-[#02A6E0] hover:bg-[#028AC9] text-white text-sm font-semibold px-4 py-2 rounded-lg transition">
+                + Tambah Mitra
+            </button>
+        </div>
+
+        @if($partners->isEmpty())
+            <div class="bg-white rounded-xl shadow-sm px-6 py-12 text-center text-gray-400 text-sm">
+                Belum ada logo mitra. Klik "+ Tambah Mitra" untuk memulai.
+            </div>
+        @else
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-4">
+                @foreach($partners as $partner)
+                    <div class="bg-white rounded-xl border border-gray-100 shadow-sm overflow-hidden flex flex-col {{ $partner->is_active ? '' : 'opacity-50' }}">
+
+                        {{-- Logo Thumbnail --}}
+                        <div class="relative h-24 bg-gray-50 flex items-center justify-center p-3 overflow-hidden">
+                            <img src="{{ Storage::url($partner->image) }}"
+                                 alt="Mitra #{{ $partner->id }}"
+                                 class="max-h-full max-w-full object-contain">
+                            @if(!$partner->is_active)
+                                <div class="absolute top-1.5 right-1.5 bg-gray-700/70 text-white text-[9px] font-medium px-1.5 py-0.5 rounded-full">
+                                    Nonaktif
+                                </div>
+                            @endif
+                        </div>
+
+                        {{-- Actions --}}
+                        <div class="px-3 py-2.5 flex items-center justify-between border-t border-gray-50">
+                            <span class="text-gray-400 text-[10px]">#{{ $partner->order }}</span>
+                            <div class="flex items-center gap-3">
+                                <button onclick="openMitraModal(
+                                            {{ $partner->id }},
+                                            {{ $partner->order }},
+                                            {{ $partner->is_active ? 'true' : 'false' }},
+                                            '{{ Storage::url($partner->image) }}'
+                                        )"
+                                        class="text-xs font-semibold text-[#02A6E0] hover:underline">
+                                    Edit
+                                </button>
+                                <form action="{{ route('admin.markom.home-partner.destroy', $partner) }}" method="POST"
+                                      onsubmit="return confirm('Hapus logo mitra ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="text-xs font-semibold text-red-400 hover:underline">Hapus</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+        @endif
+    </div>
+
+    {{-- Modal Mitra --}}
+    <div id="mitra-modal-overlay"
+         class="fixed inset-0 bg-black/50 z-50 items-center justify-center hidden"
+         onclick="if(event.target===this) closeMitraModal()">
+
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-sm mx-4">
+
+            <div class="flex items-center justify-between px-6 py-4 border-b border-gray-100">
+                <h3 id="mitra-modal-title" class="text-base font-semibold text-gray-800">Tambah Mitra</h3>
+                <button onclick="closeMitraModal()" class="text-gray-400 hover:text-gray-600 text-xl leading-none">&times;</button>
+            </div>
+
+            <form id="mitra-form"
+                  action="{{ route('admin.markom.home-partner.store') }}"
+                  method="POST"
+                  enctype="multipart/form-data"
+                  class="px-6 py-5 space-y-4">
+                @csrf
+                <input type="hidden" name="_method" id="mitra-method" value="POST">
+
+                {{-- Preview --}}
+                <div id="mitra-preview-wrap" class="hidden">
+                    <p class="text-xs text-gray-500 mb-1">Preview Logo</p>
+                    <div class="w-full h-28 bg-gray-50 rounded-lg border border-gray-100 flex items-center justify-center p-3">
+                        <img id="mitra-preview-img" src="#" alt="preview" class="max-h-full max-w-full object-contain">
+                    </div>
+                </div>
+
+                {{-- Upload --}}
+                <div>
+                    <label class="block text-xs font-medium text-gray-600 mb-1">
+                        Logo
+                        <span id="mitra-img-required" class="text-red-500">*</span>
+                        <span id="mitra-img-optional" class="hidden text-gray-400 font-normal">(opsional, kosongkan jika tidak ingin mengganti)</span>
+                    </label>
+                    <input type="file" name="image" id="mitra-image" accept="image/jpeg,image/png,image/webp"
+                           class="block w-full text-xs text-gray-500 file:mr-3 file:py-1.5 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-[#02A6E0]/10 file:text-[#02A6E0] hover:file:bg-[#02A6E0]/20">
+                    <p class="text-xs text-gray-400 mt-1">JPG, PNG, WEBP. Maks 3MB. Rekomendasi: logo transparan (PNG).</p>
+                </div>
+
+                <div class="grid grid-cols-2 gap-4">
+                    {{-- Urutan --}}
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Urutan</label>
+                        <input type="number" name="order" id="mitra-order" min="0" value="0"
+                               class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#02A6E0]/30 focus:border-[#02A6E0]">
+                    </div>
+                    {{-- Status --}}
+                    <div>
+                        <label class="block text-xs font-medium text-gray-600 mb-1">Status</label>
+                        <select name="is_active" id="mitra-status"
+                                class="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-[#02A6E0]/30 focus:border-[#02A6E0]">
+                            <option value="1">Aktif</option>
+                            <option value="0">Nonaktif</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="flex gap-3 pt-1">
+                    <button type="submit"
+                            class="flex-1 bg-[#02A6E0] hover:bg-[#028AC9] text-white text-sm font-semibold py-2.5 rounded-lg transition">
+                        Simpan
+                    </button>
+                    <button type="button" onclick="closeMitraModal()"
+                            class="flex-1 border border-gray-200 text-gray-600 hover:bg-gray-50 text-sm font-semibold py-2.5 rounded-lg transition">
+                        Batal
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const mitraStoreUrl   = "{{ route('admin.markom.home-partner.store') }}";
+        const mitraUpdateBase = "{{ url('admin/markom/home-partner') }}";
+
+        function openMitraModal(id = null, order = 0, isActive = true, imageUrl = '') {
+            const overlay  = document.getElementById('mitra-modal-overlay');
+            const form     = document.getElementById('mitra-form');
+            const imgReq   = document.getElementById('mitra-img-required');
+            const imgOpt   = document.getElementById('mitra-img-optional');
+            const prevWrap = document.getElementById('mitra-preview-wrap');
+            const prevImg  = document.getElementById('mitra-preview-img');
+
+            document.getElementById('mitra-image').value = '';
+
+            if (id) {
+                document.getElementById('mitra-modal-title').textContent = 'Edit Logo Mitra';
+                form.action = mitraUpdateBase + '/' + id;
+                document.getElementById('mitra-method').value = 'PUT';
+                imgReq.classList.add('hidden');
+                imgOpt.classList.remove('hidden');
+                if (imageUrl) {
+                    prevImg.src = imageUrl;
+                    prevWrap.classList.remove('hidden');
+                } else {
+                    prevWrap.classList.add('hidden');
+                }
+            } else {
+                document.getElementById('mitra-modal-title').textContent = 'Tambah Mitra';
+                form.action = mitraStoreUrl;
+                document.getElementById('mitra-method').value = 'POST';
+                imgReq.classList.remove('hidden');
+                imgOpt.classList.add('hidden');
+                prevWrap.classList.add('hidden');
+                prevImg.src = '#';
+            }
+
+            document.getElementById('mitra-order').value  = order;
+            document.getElementById('mitra-status').value = isActive ? '1' : '0';
+
+            overlay.classList.remove('hidden');
+            overlay.classList.add('flex');
+        }
+
+        function closeMitraModal() {
+            document.getElementById('mitra-modal-overlay').classList.add('hidden');
+            document.getElementById('mitra-modal-overlay').classList.remove('flex');
+        }
+
+        document.getElementById('mitra-image').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                document.getElementById('mitra-preview-img').src = ev.target.result;
+                document.getElementById('mitra-preview-wrap').classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+        });
+    </script>
 
     {{-- Modal Highlight Program --}}
     <div id="program-modal-overlay"

@@ -4,8 +4,20 @@ use App\Models\HeroSlider;
 use App\Models\HomeStat;
 use App\Models\HomeTestimonial;
 use App\Models\HighlightProgram;
+use App\Models\HomeMitra;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Support\Facades\Storage;
+
+Route::get('/home-partners', function () {
+    return response()->json(
+        HomeMitra::where('is_active', true)
+            ->orderBy('order')
+            ->get(['id', 'image'])
+            ->map(fn($p) => [
+                'id'    => $p->id,
+                'image' => asset('storage/' . $p->image),
+            ])
+    );
+});
 
 Route::get('/highlight-programs', function () {
     return response()->json(
@@ -16,7 +28,7 @@ Route::get('/highlight-programs', function () {
                 'id'    => $p->id,
                 'label' => $p->label,
                 'desc'  => $p->desc,
-                'image' => $p->image ? Storage::disk('public')->url($p->image) : null,
+                'image' => $p->image ? asset('storage/' . $p->image) : null,
                 'href'  => $p->href,
             ])
     );
@@ -45,7 +57,7 @@ Route::get('/hero-sliders', function () {
         $sliders->map(fn($s) => [
             'id'    => $s->id,
             'title' => $s->title,
-            'image' => Storage::disk('public')->url($s->image),
+            'image' => asset('storage/' . $s->image),
             'link'  => $s->link,
         ])
     );

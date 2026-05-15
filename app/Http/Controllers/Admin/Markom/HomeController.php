@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin\Markom;
 use App\Http\Controllers\Controller;
 use App\Models\HeroSlider;
 use App\Models\HomeStat;
+use App\Models\HomeMitra;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -16,7 +17,8 @@ class HomeController extends Controller
         $stats            = HomeStat::orderBy('order')->get();
         $testimonials     = \App\Models\HomeTestimonial::orderBy('order')->get();
         $highlightPrograms = \App\Models\HighlightProgram::orderBy('order')->get();
-        return view('admin.markom.home.index', compact('sliders', 'stats', 'testimonials', 'highlightPrograms'));
+        $partners          = HomeMitra::orderBy('order')->get();
+        return view('admin.markom.home.index', compact('sliders', 'stats', 'testimonials', 'highlightPrograms', 'partners'));
     }
 
     public function updateStats(Request $request)

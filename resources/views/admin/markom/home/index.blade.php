@@ -14,7 +14,7 @@
 
     {{-- Header --}}
     <div class="flex items-center justify-between mb-6">
-        <p class="text-sm text-gray-500">Kelola konten halaman beranda.</p>
+        <p class="text-sm text-gray-500">Hero Section</p>
         <button onclick="openModal()"
                 class="inline-flex items-center gap-2 bg-[#02A6E0] hover:bg-[#028AC9] text-white text-sm font-semibold px-4 py-2 rounded-lg transition">
             + Tambah Slide

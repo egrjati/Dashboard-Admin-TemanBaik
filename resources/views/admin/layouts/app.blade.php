@@ -31,82 +31,124 @@
                 </a>
 
                 {{-- Markom --}}
-                <div class="pt-3">
-                    <p class="text-xs text-[#02A6E0] uppercase tracking-widest px-3 mb-1">Markom</p>
+                @php $markomActive = request()->routeIs('admin.markom.*') @endphp
+                <div class="pt-2">
+                    <button onclick="toggleSection('markom')"
+                            class="w-full flex items-center justify-between px-3 py-1.5 rounded-lg transition hover:bg-[#1a3280] group">
+                        <span class="text-xs text-[#02A6E0] uppercase tracking-widest font-semibold">Markom</span>
+                        <svg id="arrow-markom"
+                             class="w-3.5 h-3.5 text-[#02A6E0] transition-transform duration-300 {{ $markomActive ? 'rotate-180' : '' }}"
+                             fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
 
-                    <a href="{{ route('admin.markom.home.index') }}"
-                       class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
-                              {{ request()->routeIs('admin.markom.home.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
-                        Beranda
-                    </a>
-                    <a href="{{ route('admin.markom.article.index') }}"
-                       class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
-                              {{ request()->routeIs('admin.markom.article.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
-                        Artikel
-                    </a>
-                    <a href="{{ route('admin.markom.news.index') }}"
-                       class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
-                              {{ request()->routeIs('admin.markom.news.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
-                        Berita
-                    </a>
-                    <a href="{{ route('admin.markom.program.index') }}"
-                       class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
-                              {{ request()->routeIs('admin.markom.program.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
-                        Program
-                    </a>
-                    <a href="{{ route('admin.markom.volunteer.index') }}"
-                       class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
-                              {{ request()->routeIs('admin.markom.volunteer.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
-                        Volunteer
-                    </a>
-                    <a href="{{ route('admin.markom.faq.index') }}"
-                       class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
-                              {{ request()->routeIs('admin.markom.faq.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
-                        FAQ
-                    </a>
-                    <a href="{{ route('admin.markom.mitra.index') }}"
-                       class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
-                              {{ request()->routeIs('admin.markom.mitra.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
-                        Mitra
-                    </a>
+                    <div id="section-markom"
+                         class="overflow-hidden transition-all duration-300 {{ $markomActive ? '' : 'hidden' }}">
+                        <div class="mt-1 space-y-0.5">
+                            <a href="{{ route('admin.markom.home.index') }}"
+                               class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
+                                      {{ request()->routeIs('admin.markom.home.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
+                                Beranda
+                            </a>
+                            <a href="{{ route('admin.markom.article.index') }}"
+                               class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
+                                      {{ request()->routeIs('admin.markom.article.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
+                                Artikel
+                            </a>
+                            <a href="{{ route('admin.markom.news.index') }}"
+                               class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
+                                      {{ request()->routeIs('admin.markom.news.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
+                                Berita
+                            </a>
+                            <a href="{{ route('admin.markom.program.index') }}"
+                               class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
+                                      {{ request()->routeIs('admin.markom.program.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
+                                Program
+                            </a>
+                            <a href="{{ route('admin.markom.volunteer.index') }}"
+                               class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
+                                      {{ request()->routeIs('admin.markom.volunteer.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
+                                Volunteer
+                            </a>
+                            <a href="{{ route('admin.markom.faq.index') }}"
+                               class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
+                                      {{ request()->routeIs('admin.markom.faq.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
+                                FAQ
+                            </a>
+                            <a href="{{ route('admin.markom.mitra.index') }}"
+                               class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
+                                      {{ request()->routeIs('admin.markom.mitra.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
+                                Mitra
+                            </a>
+                        </div>
+                    </div>
                 </div>
 
                 {{-- Operasional --}}
-                <div class="pt-3">
-                    <p class="text-xs text-[#02A6E0] uppercase tracking-widest px-3 mb-1">Operasional</p>
+                @php $opsActive = request()->routeIs('admin.operasional.*') @endphp
+                <div class="pt-2">
+                    <button onclick="toggleSection('operasional')"
+                            class="w-full flex items-center justify-between px-3 py-1.5 rounded-lg transition hover:bg-[#1a3280] group">
+                        <span class="text-xs text-[#02A6E0] uppercase tracking-widest font-semibold">Operasional</span>
+                        <svg id="arrow-operasional"
+                             class="w-3.5 h-3.5 text-[#02A6E0] transition-transform duration-300 {{ $opsActive ? 'rotate-180' : '' }}"
+                             fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
 
-                    <a href="{{ route('admin.operasional.donatur.index') }}"
-                       class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
-                              {{ request()->routeIs('admin.operasional.donatur.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
-                        Donatur
-                    </a>
-                    <a href="{{ route('admin.operasional.konfirmasi-donasi.index') }}"
-                       class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
-                              {{ request()->routeIs('admin.operasional.konfirmasi-donasi.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
-                        Konfirmasi Donasi
-                    </a>
-                    <a href="{{ route('admin.operasional.bantuan.index') }}"
-                       class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
-                              {{ request()->routeIs('admin.operasional.bantuan.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
-                        Bantuan
-                    </a>
-                    <a href="{{ route('admin.operasional.kemitraan.index') }}"
-                       class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
-                              {{ request()->routeIs('admin.operasional.kemitraan.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
-                        Kemitraan
-                    </a>
+                    <div id="section-operasional"
+                         class="overflow-hidden transition-all duration-300 {{ $opsActive ? '' : 'hidden' }}">
+                        <div class="mt-1 space-y-0.5">
+                            <a href="{{ route('admin.operasional.donatur.index') }}"
+                               class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
+                                      {{ request()->routeIs('admin.operasional.donatur.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
+                                Donatur
+                            </a>
+                            <a href="{{ route('admin.operasional.konfirmasi-donasi.index') }}"
+                               class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
+                                      {{ request()->routeIs('admin.operasional.konfirmasi-donasi.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
+                                Konfirmasi Donasi
+                            </a>
+                            <a href="{{ route('admin.operasional.bantuan.index') }}"
+                               class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
+                                      {{ request()->routeIs('admin.operasional.bantuan.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
+                                Bantuan
+                            </a>
+                            <a href="{{ route('admin.operasional.kemitraan.index') }}"
+                               class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
+                                      {{ request()->routeIs('admin.operasional.kemitraan.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
+                                Kemitraan
+                            </a>
+                        </div>
+                    </div>
                 </div>
 
                 {{-- Super Admin --}}
                 @if(Auth::check() && Auth::user()->role === 'superadmin')
-                <div class="pt-3">
-                    <p class="text-xs text-[#02A6E0] uppercase tracking-widest px-3 mb-1">Super Admin</p>
+                @php $saActive = request()->routeIs('admin.superadmin.*') @endphp
+                <div class="pt-2">
+                    <button onclick="toggleSection('superadmin')"
+                            class="w-full flex items-center justify-between px-3 py-1.5 rounded-lg transition hover:bg-[#1a3280] group">
+                        <span class="text-xs text-[#02A6E0] uppercase tracking-widest font-semibold">Super Admin</span>
+                        <svg id="arrow-superadmin"
+                             class="w-3.5 h-3.5 text-[#02A6E0] transition-transform duration-300 {{ $saActive ? 'rotate-180' : '' }}"
+                             fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
+                        </svg>
+                    </button>
 
-                    <a href="{{ route('admin.superadmin.user.index') }}"
-                       class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
-                              {{ request()->routeIs('admin.superadmin.user.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
-                        Manajemen User
-                    </a>
+                    <div id="section-superadmin"
+                         class="overflow-hidden transition-all duration-300 {{ $saActive ? '' : 'hidden' }}">
+                        <div class="mt-1 space-y-0.5">
+                            <a href="{{ route('admin.superadmin.user.index') }}"
+                               class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
+                                      {{ request()->routeIs('admin.superadmin.user.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
+                                Manajemen User
+                            </a>
+                        </div>
+                    </div>
                 </div>
                 @endif
 
@@ -143,6 +185,21 @@
         </div>
 
     </div>
+
+    <script>
+        function toggleSection(name) {
+            const section = document.getElementById('section-' + name);
+            const arrow   = document.getElementById('arrow-' + name);
+
+            if (section.classList.contains('hidden')) {
+                section.classList.remove('hidden');
+                arrow.classList.add('rotate-180');
+            } else {
+                section.classList.add('hidden');
+                arrow.classList.remove('rotate-180');
+            }
+        }
+    </script>
 
 </body>
 </html>

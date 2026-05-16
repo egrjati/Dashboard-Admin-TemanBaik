@@ -12,5 +12,10 @@ class About extends Model
         'image',
         'title',
         'description',
+        'story_title',
+        'story_description',
+        'story_image_1',
+        'story_image_2',
+        'story_image_3',
     ];
 }

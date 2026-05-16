@@ -44,7 +44,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::resource('home-partner', HomeMitraController::class)
                 ->only(['store', 'update', 'destroy'])
                 ->parameters(['home-partner' => 'homeMitra']);
-            Route::resource('about', AboutController::class);
+            Route::get('about', [AboutController::class, 'index'])->name('about.index');
+            Route::put('about/{about}/hero', [AboutController::class, 'updateHero'])->name('about.updateHero');
+            Route::put('about/{about}/story', [AboutController::class, 'updateStory'])->name('about.updateStory');
             Route::resource('article', ArticleController::class);
             Route::resource('news', NewsController::class);
             Route::resource('program', ProgramController::class);

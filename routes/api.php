@@ -9,14 +9,23 @@ use App\Models\HomeMitra;
 use App\Models\HomeCta;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/about-hero', function () {
-    $hero = About::first();
-    if (!$hero) return response()->json(null);
+Route::get('/about', function () {
+    $about = About::first();
+    if (!$about) return response()->json(null);
 
     return response()->json([
-        'title'       => $hero->title,
-        'description' => $hero->description,
-        'image'       => $hero->image ? asset('storage/' . $hero->image) : null,
+        'hero' => [
+            'title'       => $about->title,
+            'description' => $about->description,
+            'image'       => $about->image ? asset('storage/' . $about->image) : null,
+        ],
+        'story' => [
+            'title'       => $about->story_title,
+            'description' => $about->story_description,
+            'image_1'     => $about->story_image_1 ? asset('storage/' . $about->story_image_1) : null,
+            'image_2'     => $about->story_image_2 ? asset('storage/' . $about->story_image_2) : null,
+            'image_3'     => $about->story_image_3 ? asset('storage/' . $about->story_image_3) : null,
+        ],
     ]);
 });
 

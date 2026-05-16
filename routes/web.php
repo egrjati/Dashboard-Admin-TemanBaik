@@ -43,6 +43,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::resource('home-partner', HomeMitraController::class)
                 ->only(['store', 'update', 'destroy'])
                 ->parameters(['home-partner' => 'homeMitra']);
+            Route::resource('about', 'App\\Http\\Controllers\\Admin\\Markom\\AboutController');
             Route::resource('article', ArticleController::class);
             Route::resource('news', NewsController::class);
             Route::resource('program', ProgramController::class);
@@ -65,7 +66,5 @@ Route::prefix('admin')->name('admin.')->group(function () {
         Route::middleware('role:superadmin')->prefix('superadmin')->name('superadmin.')->group(function () {
             Route::resource('user', UserController::class);
         });
-
     });
-
 });

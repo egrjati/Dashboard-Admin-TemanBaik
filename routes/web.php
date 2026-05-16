@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\Markom\HomeController;
+use App\Http\Controllers\Admin\Markom\AboutController;
 use App\Http\Controllers\Admin\Markom\ArticleController;
 use App\Http\Controllers\Admin\Markom\NewsController;
 use App\Http\Controllers\Admin\Markom\ProgramController;
@@ -43,7 +44,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::resource('home-partner', HomeMitraController::class)
                 ->only(['store', 'update', 'destroy'])
                 ->parameters(['home-partner' => 'homeMitra']);
-            Route::resource('about', 'App\\Http\\Controllers\\Admin\\Markom\\AboutController');
+            Route::resource('about', AboutController::class);
             Route::resource('article', ArticleController::class);
             Route::resource('news', NewsController::class);
             Route::resource('program', ProgramController::class);

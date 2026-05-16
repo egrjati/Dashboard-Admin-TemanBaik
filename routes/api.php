@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\About;
 use App\Models\HeroSlider;
 use App\Models\HomeStat;
 use App\Models\HomeTestimonial;
@@ -7,6 +8,17 @@ use App\Models\HighlightProgram;
 use App\Models\HomeMitra;
 use App\Models\HomeCta;
 use Illuminate\Support\Facades\Route;
+
+Route::get('/about-hero', function () {
+    $hero = About::first();
+    if (!$hero) return response()->json(null);
+
+    return response()->json([
+        'title'       => $hero->title,
+        'description' => $hero->description,
+        'image'       => $hero->image ? asset('storage/' . $hero->image) : null,
+    ]);
+});
 
 Route::get('/home-cta', function () {
     $cta = HomeCta::first();

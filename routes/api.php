@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\About;
+use App\Models\AboutTeamMember;
 use App\Models\HeroSlider;
 use App\Models\HomeStat;
 use App\Models\HomeTestimonial;
@@ -10,22 +11,28 @@ use App\Models\HomeCta;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/about', function () {
-    $about = About::first();
-    if (!$about) return response()->json(null);
+    $about   = About::first();
+    $members = AboutTeamMember::orderBy('order')->get();
 
     return response()->json([
-        'hero' => [
+        'hero' => $about ? [
             'title'       => $about->title,
             'description' => $about->description,
             'image'       => $about->image ? asset('storage/' . $about->image) : null,
-        ],
-        'story' => [
+        ] : null,
+        'story' => $about ? [
             'title'       => $about->story_title,
             'description' => $about->story_description,
             'image_1'     => $about->story_image_1 ? asset('storage/' . $about->story_image_1) : null,
             'image_2'     => $about->story_image_2 ? asset('storage/' . $about->story_image_2) : null,
             'image_3'     => $about->story_image_3 ? asset('storage/' . $about->story_image_3) : null,
-        ],
+        ] : null,
+        'team' => $members->map(fn($m) => [
+            'id'       => $m->id,
+            'name'     => $m->name,
+            'position' => $m->position,
+            'photo'    => $m->photo ? asset('storage/' . $m->photo) : null,
+        ]),
     ]);
 });
 

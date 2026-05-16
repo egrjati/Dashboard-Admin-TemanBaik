@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\Auth\LoginController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\Markom\HomeController;
 use App\Http\Controllers\Admin\Markom\AboutController;
+use App\Http\Controllers\Admin\Markom\AboutTeamMemberController;
 use App\Http\Controllers\Admin\Markom\ArticleController;
 use App\Http\Controllers\Admin\Markom\NewsController;
 use App\Http\Controllers\Admin\Markom\ProgramController;
@@ -47,6 +48,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::get('about', [AboutController::class, 'index'])->name('about.index');
             Route::put('about/{about}/hero', [AboutController::class, 'updateHero'])->name('about.updateHero');
             Route::put('about/{about}/story', [AboutController::class, 'updateStory'])->name('about.updateStory');
+            Route::resource('about-team', AboutTeamMemberController::class)
+                ->only(['store', 'update', 'destroy'])
+                ->parameters(['about-team' => 'aboutTeamMember']);
             Route::resource('article', ArticleController::class);
             Route::resource('news', NewsController::class);
             Route::resource('program', ProgramController::class);

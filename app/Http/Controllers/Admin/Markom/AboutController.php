@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\Markom;
 
 use App\Http\Controllers\Controller;
 use App\Models\About;
+use App\Models\AboutTeamMember;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -11,8 +12,9 @@ class AboutController extends Controller
 {
     public function index()
     {
-        $about = About::firstOrCreate([], ['title' => '', 'description' => '', 'image' => '']);
-        return view('admin.markom.about.index', compact('about'));
+        $about   = About::firstOrCreate([], ['title' => '', 'description' => '', 'image' => '']);
+        $members = AboutTeamMember::orderBy('order')->get();
+        return view('admin.markom.about.index', compact('about', 'members'));
     }
 
     public function updateHero(Request $request, About $about)

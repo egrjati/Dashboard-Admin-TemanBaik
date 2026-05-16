@@ -155,4 +155,189 @@
         </form>
     </div>
 
+    {{-- Management Tim --}}
+    <div class="mt-6 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+
+        <div class="px-6 py-4 border-b border-gray-100 flex items-center gap-3 bg-gradient-to-r from-slate-50 to-white">
+            <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+                 style="background: linear-gradient(135deg, rgba(2,166,224,0.12) 0%, rgba(33,63,154,0.08) 100%); border: 1px solid rgba(2,166,224,0.2)">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-[18px] h-[18px]" fill="none" viewBox="0 0 24 24" stroke="#02A6E0" stroke-width="1.8">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                </svg>
+            </div>
+            <div>
+                <h3 class="font-semibold text-gray-800 text-sm">Management Tim</h3>
+                <p class="text-xs text-gray-400 mt-0.5">Judul dan deskripsi untuk bagian manajemen tim di halaman Tentang Kami</p>
+            </div>
+        </div>
+
+    {{-- Section Management Team --}}
+    <div class="mt-6 bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+
+        <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between bg-gradient-to-r from-slate-50 to-white">
+            <div class="flex items-center gap-3">
+                <div class="w-9 h-9 rounded-xl flex items-center justify-center shrink-0"
+                     style="background: linear-gradient(135deg, rgba(2,166,224,0.12) 0%, rgba(33,63,154,0.08) 100%); border: 1px solid rgba(2,166,224,0.2)">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-[18px] h-[18px]" fill="none" viewBox="0 0 24 24" stroke="#02A6E0" stroke-width="1.8">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                </div>
+                <div>
+                    <h3 class="font-semibold text-gray-800 text-sm">Management Team</h3>
+                    <p class="text-xs text-gray-400 mt-0.5">Kelola daftar anggota tim yang tampil di halaman Tentang Kami</p>
+                </div>
+            </div>
+            <button onclick="openMemberModal()"
+                    class="inline-flex items-center gap-1.5 bg-[#02A6E0] hover:bg-[#028AC9] text-white text-xs font-semibold px-3.5 py-2 rounded-lg transition">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/>
+                </svg>
+                Tambah Anggota
+            </button>
+        </div>
+
+        <table class="w-full text-sm text-left">
+            <thead class="bg-gray-50 text-gray-500 uppercase text-xs tracking-wider">
+                <tr>
+                    <th class="px-4 py-3">Foto</th>
+                    <th class="px-4 py-3">Nama</th>
+                    <th class="px-4 py-3">Jabatan</th>
+                    <th class="px-4 py-3 text-center">Urutan</th>
+                    <th class="px-4 py-3 text-center">Aksi</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100">
+                @forelse($members as $member)
+                    <tr class="hover:bg-gray-50 transition">
+                        <td class="px-4 py-3">
+                            @if($member->photo)
+                                <img src="{{ Storage::url($member->photo) }}" alt="{{ $member->name }}"
+                                     class="w-12 h-12 object-cover rounded-xl">
+                            @else
+                                <div class="w-12 h-12 rounded-xl bg-gray-100 flex items-center justify-center text-gray-300">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                                </div>
+                            @endif
+                        </td>
+                        <td class="px-4 py-3 font-medium text-gray-800">{{ $member->name }}</td>
+                        <td class="px-4 py-3 text-gray-500">{{ $member->position }}</td>
+                        <td class="px-4 py-3 text-center text-gray-700">{{ $member->order }}</td>
+                        <td class="px-4 py-3 text-center">
+                            <div class="flex items-center justify-center gap-3">
+                                <button onclick="openMemberModal({{ $member->id }}, '{{ addslashes($member->name) }}', '{{ addslashes($member->position) }}', {{ $member->order }}, '{{ $member->photo ? Storage::url($member->photo) : '' }}')"
+                                        class="text-xs font-semibold text-[#02A6E0] hover:underline">Edit</button>
+                                <form action="{{ route('admin.markom.about-team.destroy', $member) }}" method="POST"
+                                      onsubmit="return confirm('Hapus anggota ini?')">
+                                    @csrf @method('DELETE')
+                                    <button type="submit" class="text-xs font-semibold text-red-500 hover:underline">Hapus</button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                @empty
+                    <tr>
+                        <td colspan="5" class="px-4 py-12 text-center text-gray-400 text-sm">
+                            Belum ada anggota tim. Klik "Tambah Anggota" untuk memulai.
+                        </td>
+                    </tr>
+                @endforelse
+            </tbody>
+        </table>
+    </div>
+
+    {{-- Modal Tambah / Edit Anggota --}}
+    <div id="memberModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/40 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl shadow-xl w-full max-w-md mx-4 overflow-hidden">
+            <div class="px-6 py-4 border-b border-gray-100 flex items-center justify-between">
+                <h3 id="modalTitle" class="font-semibold text-gray-800 text-sm">Tambah Anggota</h3>
+                <button onclick="closeMemberModal()" class="text-gray-400 hover:text-gray-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+                </button>
+            </div>
+
+            <form id="memberForm" method="POST" enctype="multipart/form-data" class="px-6 py-5 space-y-4">
+                @csrf
+                <span id="methodField"></span>
+
+                {{-- Preview foto --}}
+                <div id="photoPreviewWrap" class="hidden">
+                    <p class="text-xs text-gray-400 font-medium uppercase tracking-wider mb-2">Foto Saat Ini</p>
+                    <img id="photoPreview" src="" alt="" class="w-20 h-20 object-cover rounded-xl">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Nama</label>
+                    <input type="text" name="name" id="memberName" required
+                           class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#02A6E0]/40 focus:border-[#02A6E0]"
+                           placeholder="cth: Ahmad Hidayat">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Jabatan</label>
+                    <input type="text" name="position" id="memberPosition" required
+                           class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#02A6E0]/40 focus:border-[#02A6E0]"
+                           placeholder="cth: Direktur Utama">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Foto <span class="text-gray-400 font-normal">(portrait, rasio 4:5)</span></label>
+                    <input type="file" name="photo" accept="image/*"
+                           class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-[#02A6E0]/10 file:text-[#02A6E0] hover:file:bg-[#02A6E0]/20 transition">
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1.5">Urutan</label>
+                    <input type="number" name="order" id="memberOrder" value="0" min="0"
+                           class="w-full border border-gray-300 rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#02A6E0]/40 focus:border-[#02A6E0]">
+                </div>
+
+                <div class="flex justify-end gap-3 pt-2">
+                    <button type="button" onclick="closeMemberModal()"
+                            class="px-4 py-2 text-sm text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 transition">
+                        Batal
+                    </button>
+                    <button type="submit"
+                            class="inline-flex items-center gap-2 bg-[#02A6E0] hover:bg-[#028AC9] text-white text-sm font-semibold px-5 py-2 rounded-lg transition">
+                        Simpan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const storeUrl = "{{ route('admin.markom.about-team.store') }}";
+
+        function openMemberModal(id = null, name = '', position = '', order = 0, photo = '') {
+            document.getElementById('memberModal').classList.remove('hidden');
+            document.getElementById('memberModal').classList.add('flex');
+            document.getElementById('modalTitle').textContent = id ? 'Edit Anggota' : 'Tambah Anggota';
+            document.getElementById('memberName').value     = name;
+            document.getElementById('memberPosition').value = position;
+            document.getElementById('memberOrder').value    = order;
+
+            const methodField = document.getElementById('methodField');
+            if (id) {
+                document.getElementById('memberForm').action = `/admin/markom/about-team/${id}`;
+                methodField.innerHTML = '<input type="hidden" name="_method" value="PUT">';
+            } else {
+                document.getElementById('memberForm').action = storeUrl;
+                methodField.innerHTML = '';
+            }
+
+            const preview = document.getElementById('photoPreviewWrap');
+            if (photo) {
+                document.getElementById('photoPreview').src = photo;
+                preview.classList.remove('hidden');
+            } else {
+                preview.classList.add('hidden');
+            }
+        }
+
+        function closeMemberModal() {
+            document.getElementById('memberModal').classList.add('hidden');
+            document.getElementById('memberModal').classList.remove('flex');
+        }
+    </script>
+
 @endsection

@@ -46,26 +46,37 @@
                     <div id="section-markom"
                          class="overflow-hidden transition-all duration-300 {{ $markomActive ? '' : 'hidden' }}">
                         <div class="mt-1 space-y-0.5">
+                            {{-- Home --}}
                             <a href="{{ route('admin.markom.home.index') }}"
                                class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
                                       {{ request()->routeIs('admin.markom.home.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
                                 Beranda
                             </a>
+                            {{-- About us --}}
+                            <a href="{{ route('admin.markom.about.index') }}"
+                               class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
+                                      {{ request()->routeIs('admin.markom.about.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
+                                Tentang Kami
+                            </a>
+                            {{-- Program --}}
+                             <a href="{{ route('admin.markom.program.index') }}"
+                               class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
+                                      {{ request()->routeIs('admin.markom.program.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
+                                Program
+                            </a>
+                            {{-- Artikel --}}
                             <a href="{{ route('admin.markom.article.index') }}"
                                class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
                                       {{ request()->routeIs('admin.markom.article.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
                                 Artikel
                             </a>
+                            {{-- News --}}
                             <a href="{{ route('admin.markom.news.index') }}"
                                class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
                                       {{ request()->routeIs('admin.markom.news.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
                                 Berita
                             </a>
-                            <a href="{{ route('admin.markom.program.index') }}"
-                               class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
-                                      {{ request()->routeIs('admin.markom.program.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">
-                                Program
-                            </a>
+                            {{-- Volunteer --}}
                             <a href="{{ route('admin.markom.volunteer.index') }}"
                                class="flex items-center gap-3 px-3 py-2 rounded-lg text-sm transition
                                       {{ request()->routeIs('admin.markom.volunteer.*') ? 'bg-[#02A6E0] font-semibold' : 'hover:bg-[#028AC9]' }}">

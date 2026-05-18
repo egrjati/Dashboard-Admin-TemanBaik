@@ -54,6 +54,12 @@ Route::prefix('admin')->name('admin.')->group(function () {
             Route::resource('article', ArticleController::class);
             Route::resource('news', NewsController::class);
             Route::put('program-hero', [ProgramController::class, 'updateHero'])->name('program.updateHero');
+            Route::get('program/{program}/content', [ProgramController::class, 'showContent'])->name('program.content');
+            Route::put('program/{program}/hero-content', [ProgramController::class, 'updateHeroContent'])->name('program.updateHeroContent');
+            Route::post('program/{program}/items', [ProgramController::class, 'storeItem'])->name('program.storeItem');
+            Route::put('program/{program}/items/{item}', [ProgramController::class, 'updateItem'])->name('program.updateItem');
+            Route::delete('program/{program}/items/{item}', [ProgramController::class, 'destroyItem'])->name('program.destroyItem');
+            Route::put('program/{program}/cta-content', [ProgramController::class, 'updateCtaContent'])->name('program.updateCtaContent');
             Route::resource('program', ProgramController::class);
             Route::resource('career', CareerController::class);
             Route::resource('volunteer', VolunteerController::class);

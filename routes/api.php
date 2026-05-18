@@ -3,6 +3,8 @@
 use App\Models\About;
 use App\Models\ProgramCard;
 use App\Models\ProgramHero;
+use App\Models\ProgramPageCta;
+use App\Models\ProgramPageHero;
 use App\Models\AboutTeamMember;
 use App\Models\HeroSlider;
 use App\Models\HomeStat;
@@ -122,6 +124,38 @@ Route::get('/program-cards', function () {
             'href'        => '/program/' . $c->slug,
         ])
     );
+});
+
+Route::get('/program/{slug}', function (string $slug) {
+    $card = ProgramCard::where('slug', $slug)->first();
+    if (!$card) return response()->json(null, 404);
+
+    $hero  = ProgramPageHero::where('program_card_id', $card->id)->first();
+    $items = $card->items()->get()->map(fn($i) => [
+        'id'          => $i->id,
+        'title'       => $i->title,
+        'description' => $i->description,
+        'image'       => $i->image ? asset('storage/' . $i->image) : null,
+        'order'       => $i->order,
+    ]);
+    $cta = ProgramPageCta::where('program_card_id', $card->id)->first();
+
+    return response()->json([
+        'name' => $card->name,
+        'slug' => $card->slug,
+        'hero' => $hero ? [
+            'bg_image'          => $hero->bg_image ? asset('storage/' . $hero->bg_image) : null,
+            'heading'           => $hero->heading,
+            'heading_highlight' => $hero->heading_highlight,
+            'description'       => $hero->description,
+        ] : null,
+        'items' => $items,
+        'cta'  => $cta ? [
+            'bg_image'    => $cta->bg_image ? asset('storage/' . $cta->bg_image) : null,
+            'heading'     => $cta->heading,
+            'description' => $cta->description,
+        ] : null,
+    ]);
 });
 
 Route::get('/program-hero', function () {

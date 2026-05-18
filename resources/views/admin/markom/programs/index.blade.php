@@ -164,6 +164,10 @@
                         <td class="px-4 py-3 text-center text-gray-700">{{ $card->order }}</td>
                         <td class="px-4 py-3 text-center">
                             <div class="flex items-center justify-center gap-3">
+                                <a href="{{ route('admin.markom.program.content', $card) }}"
+                                   class="text-xs font-semibold text-[#213F9A] hover:underline">
+                                    Konten
+                                </a>
                                 <button onclick="openCardModal(
                                     {{ $card->id }},
                                     '{{ addslashes($card->name) }}',

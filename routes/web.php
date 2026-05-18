@@ -53,6 +53,7 @@ Route::prefix('admin')->name('admin.')->group(function () {
                 ->parameters(['about-team' => 'aboutTeamMember']);
             Route::resource('article', ArticleController::class);
             Route::resource('news', NewsController::class);
+            Route::put('program-hero', [ProgramController::class, 'updateHero'])->name('program.updateHero');
             Route::resource('program', ProgramController::class);
             Route::resource('career', CareerController::class);
             Route::resource('volunteer', VolunteerController::class);

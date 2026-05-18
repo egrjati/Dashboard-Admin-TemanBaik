@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\About;
+use App\Models\ProgramCard;
+use App\Models\ProgramHero;
 use App\Models\AboutTeamMember;
 use App\Models\HeroSlider;
 use App\Models\HomeStat;
@@ -106,4 +108,30 @@ Route::get('/hero-sliders', function () {
             'link'  => $s->link,
         ])
     );
+});
+
+Route::get('/program-cards', function () {
+    return response()->json(
+        ProgramCard::orderBy('order')->get()->map(fn($c) => [
+            'id'          => $c->id,
+            'name'        => $c->name,
+            'slug'        => $c->slug,
+            'description' => $c->description,
+            'image'       => $c->image ? asset('storage/' . $c->image) : null,
+            'icon'        => $c->icon,
+            'href'        => '/program/' . $c->slug,
+        ])
+    );
+});
+
+Route::get('/program-hero', function () {
+    $hero = ProgramHero::first();
+    if (!$hero) return response()->json(null);
+
+    return response()->json([
+        'title'           => $hero->title,
+        'title_highlight' => $hero->title_highlight,
+        'description'     => $hero->description,
+        'image'           => $hero->image ? asset('storage/' . $hero->image) : null,
+    ]);
 });

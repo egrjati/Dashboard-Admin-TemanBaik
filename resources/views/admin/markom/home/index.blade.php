@@ -118,19 +118,17 @@
 
             <table class="w-full text-sm text-left">
                     <thead class="bg-gray-50 text-gray-500 uppercase text-xs tracking-wider">
-                        <tr>
-                            <th class="px-4 py-3">Key</th>
-                            <th class="px-4 py-3">Nilai (Value)</th>
+                        <tr class="text-center">
+                            <th class="px-4 py-3">Total</th>
                             <th class="px-4 py-3">Label</th>
                             <th class="px-4 py-3">Icon</th>
-                            <th class="px-4 py-3">Deskripsi (Tooltip)</th>
+                            <th class="px-4 py-3">Deskripsi</th>
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-100">
                         @forelse($stats as $i => $stat)
                             <tr class="hover:bg-gray-50 transition">
                                 <input type="hidden" name="stats[{{ $i }}][key]" value="{{ $stat->key }}">
-                                <td class="px-4 py-3 text-gray-400 font-mono text-xs">{{ $stat->key }}</td>
                                 <td class="px-4 py-3">
                                     <input type="text" name="stats[{{ $i }}][value]"
                                            value="{{ $stat->value }}"
@@ -160,7 +158,7 @@
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="3" class="px-4 py-12 text-center text-gray-400 text-sm">
+                                <td colspan="4" class="px-4 py-12 text-center text-gray-400 text-sm">
                                     Data penyebaran belum tersedia. Jalankan seeder terlebih dahulu.
                                 </td>
                             </tr>

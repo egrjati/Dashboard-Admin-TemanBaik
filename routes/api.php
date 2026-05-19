@@ -158,6 +158,39 @@ Route::get('/program/{slug}', function (string $slug) {
     ]);
 });
 
+Route::get('/news', function () {
+    return response()->json(
+        \App\Models\News::where('is_published', true)
+            ->orderByDesc('published_at')
+            ->get()
+            ->map(fn($n) => [
+                'id'           => $n->id,
+                'title'        => $n->title,
+                'excerpt'      => $n->excerpt,
+                'category'     => $n->category,
+                'image'        => $n->image ? asset('storage/' . $n->image) : null,
+                'published_at' => $n->published_at?->format('d M Y'),
+                'tier'         => $n->tier,
+            ])
+    );
+});
+
+Route::get('/news/{id}', function (int $id) {
+    $news = \App\Models\News::where('id', $id)->where('is_published', true)->first();
+    if (!$news) return response()->json(null, 404);
+
+    return response()->json([
+        'id'           => $news->id,
+        'title'        => $news->title,
+        'excerpt'      => $news->excerpt,
+        'content'      => $news->content,
+        'category'     => $news->category,
+        'image'        => $news->image ? asset('storage/' . $news->image) : null,
+        'published_at' => $news->published_at?->format('d M Y'),
+        'tier'         => $news->tier,
+    ]);
+});
+
 Route::get('/program-hero', function () {
     $hero = ProgramHero::first();
     if (!$hero) return response()->json(null);

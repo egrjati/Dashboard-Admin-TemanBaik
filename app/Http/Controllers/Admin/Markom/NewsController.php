@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin\Markom;
 
 use App\Http\Controllers\Controller;
 use App\Models\News;
+use App\Models\NewsBanner;
+use App\Models\NewsHero;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -11,9 +13,58 @@ class NewsController extends Controller
 {
     public function index()
     {
-        $news = News::orderByDesc('published_at')->orderByDesc('created_at')->get();
+        $hero   = NewsHero::firstOrCreate([], [
+            'heading'     => 'Berita & Kabar Terbaru',
+            'description' => 'Ikuti perkembangan program, aksi, dan dampak nyata yang kami hadirkan di lapangan.',
+        ]);
+        $banner = NewsBanner::firstOrCreate([]);
+        $news   = News::orderByDesc('published_at')->orderByDesc('created_at')->get();
 
-        return view('admin.markom.news.index', compact('news'));
+        return view('admin.markom.news.index', compact('hero', 'banner', 'news'));
+    }
+
+    public function updateBanner(Request $request)
+    {
+        $request->validate([
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+            'link'  => 'nullable|url|max:500',
+            'alt'   => 'nullable|string|max:200',
+        ]);
+
+        $banner = NewsBanner::firstOrCreate([]);
+        $data   = $request->only(['link', 'alt']);
+
+        if ($request->hasFile('image')) {
+            if ($banner->image) Storage::disk('public')->delete($banner->image);
+            $data['image'] = $request->file('image')->store('news-banner', 'public');
+        }
+
+        $banner->update($data);
+
+        return redirect()->route('admin.markom.news.index')
+            ->with('success', 'Banner iklan berita berhasil diperbarui.');
+    }
+
+    public function updateHero(Request $request)
+    {
+        $request->validate([
+            'heading'     => 'required|string|max:200',
+            'description' => 'nullable|string|max:500',
+            'bg_image'    => 'nullable|image|mimes:jpg,jpeg,png,webp|max:5120',
+        ]);
+
+        $hero = NewsHero::firstOrCreate([]);
+        $data = $request->only(['heading', 'description']);
+
+        if ($request->hasFile('bg_image')) {
+            if ($hero->bg_image) Storage::disk('public')->delete($hero->bg_image);
+            $data['bg_image'] = $request->file('bg_image')->store('news-hero', 'public');
+        }
+
+        $hero->update($data);
+
+        return redirect()->route('admin.markom.news.index')
+            ->with('success', 'Section Hero berita berhasil diperbarui.');
     }
 
     public function store(Request $request)
@@ -67,6 +118,19 @@ class NewsController extends Controller
 
         return redirect()->route('admin.markom.news.index')
             ->with('success', 'Berita berhasil diperbarui.');
+    }
+
+    public function uploadImage(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|image|mimes:jpg,jpeg,png,webp,gif|max:5120',
+        ]);
+
+        $path = $request->file('file')->store('news-content', 'public');
+
+        return response()->json([
+            'location' => Storage::disk('public')->url($path),
+        ]);
     }
 
     public function destroy(News $news)

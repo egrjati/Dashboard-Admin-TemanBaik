@@ -52,6 +52,9 @@ Route::prefix('admin')->name('admin.')->group(function () {
                 ->only(['store', 'update', 'destroy'])
                 ->parameters(['about-team' => 'aboutTeamMember']);
             Route::resource('article', ArticleController::class);
+            Route::put('news-hero', [NewsController::class, 'updateHero'])->name('news.updateHero');
+            Route::put('news-banner', [NewsController::class, 'updateBanner'])->name('news.updateBanner');
+            Route::post('news-image-upload', [NewsController::class, 'uploadImage'])->name('news.imageUpload');
             Route::resource('news', NewsController::class);
             Route::put('program-hero', [ProgramController::class, 'updateHero'])->name('program.updateHero');
             Route::get('program/{program}/content', [ProgramController::class, 'showContent'])->name('program.content');

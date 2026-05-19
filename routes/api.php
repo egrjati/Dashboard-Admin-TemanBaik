@@ -158,6 +158,28 @@ Route::get('/program/{slug}', function (string $slug) {
     ]);
 });
 
+Route::get('/news-banner', function () {
+    $banner = \App\Models\NewsBanner::first();
+    if (!$banner || !$banner->image) return response()->json(null);
+
+    return response()->json([
+        'image' => asset('storage/' . $banner->image),
+        'link'  => $banner->link,
+        'alt'   => $banner->alt,
+    ]);
+});
+
+Route::get('/news-hero', function () {
+    $hero = \App\Models\NewsHero::first();
+    if (!$hero) return response()->json(null);
+
+    return response()->json([
+        'heading'     => $hero->heading,
+        'description' => $hero->description,
+        'bg_image'    => $hero->bg_image ? asset('storage/' . $hero->bg_image) : null,
+    ]);
+});
+
 Route::get('/news', function () {
     return response()->json(
         \App\Models\News::where('is_published', true)
